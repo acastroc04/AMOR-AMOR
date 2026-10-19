@@ -9,6 +9,14 @@ const hearts = document.querySelector('#hearts');
 const currentNumberElement = document.querySelector('#currentNumber');
 const verifyState = document.querySelector('#verifyState');
 const dialFeedback = document.querySelector('.dial-feedback');
+const photoTray = document.querySelector('#photoTray');
+const trayPhotos = [...document.querySelectorAll('.tray-photo')];
+const photoSlots = [...document.querySelectorAll('.photo-slot')];
+const puzzleInstruction = document.querySelector('.puzzle-instruction');
+const memoryModal = document.querySelector('#memoryModal');
+const memoryImage = document.querySelector('#memoryImage');
+const memoryMessage = document.querySelector('#memoryMessage');
+const memoryClose = document.querySelector('#memoryClose');
 
 const combination = [20, 18, 45];
 const degreesPerNumber = 360 / 60;
@@ -21,6 +29,17 @@ let verificationTimer = null;
 let unlocked = false;
 let soundPlayer = null;
 let soundsUnlocked = false;
+let activeTrayPhoto = null;
+let dragGhost = null;
+let activeSlot = null;
+let placedPhotos = 0;
+
+const memoryMessages = {
+  1: 'Ese día contigo ♡',
+  2: 'Mi lugar favorito',
+  3: 'Tú y tu sonrisa',
+  4: 'Siempre nosotros'
+};
 
 function createWavDataUrl(kind) {
   const rate = 22050;
@@ -225,9 +244,93 @@ albumButton.addEventListener('click', () => {
     albumScene.classList.add('shown');
     requestAnimationFrame(() => albumScene.classList.add('zoomed'));
     setTimeout(() => albumBook.classList.add('open'), 1200);
+    setTimeout(() => albumScene.classList.add('puzzle-ready'), 2450);
   });
   makeHearts();
 });
+
+function moveGhost(touch) {
+  if (!dragGhost) return;
+  dragGhost.style.left = `${touch.clientX}px`;
+  dragGhost.style.top = `${touch.clientY}px`;
+  const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+  const target = elementBelow ? elementBelow.closest('.photo-slot') : null;
+  if (target !== activeSlot) {
+    if (activeSlot) activeSlot.classList.remove('target');
+    activeSlot = target;
+    if (activeSlot) activeSlot.classList.add('target');
+  }
+}
+
+function startPhotoDrag(event) {
+  if (!event.touches.length || this.classList.contains('placed')) return;
+  event.preventDefault();
+  activeTrayPhoto = this;
+  dragGhost = document.createElement('div');
+  dragGhost.className = 'drag-ghost';
+  dragGhost.innerHTML = `<img src="${this.querySelector('img').src}" alt="">`;
+  document.body.appendChild(dragGhost);
+  moveGhost(event.touches[0]);
+}
+
+function dragPhoto(event) {
+  if (!activeTrayPhoto || !event.touches.length) return;
+  event.preventDefault();
+  moveGhost(event.touches[0]);
+}
+
+function finishPhotoDrag(event) {
+  if (!activeTrayPhoto) return;
+  const touch = event.changedTouches && event.changedTouches[0];
+  if (touch) moveGhost(touch);
+  const photoNumber = activeTrayPhoto.dataset.photo;
+
+  if (activeSlot && !activeSlot.classList.contains('correct') && activeSlot.dataset.slot === photoNumber) {
+    const source = activeTrayPhoto.querySelector('img').src;
+    const slotImage = activeSlot.querySelector('.photo-frame img');
+    slotImage.src = source;
+    activeSlot.classList.add('correct');
+    activeTrayPhoto.classList.add('placed');
+    placedPhotos += 1;
+    puzzleInstruction.textContent = placedPhotos === 4 ? 'Todos los recuerdos están en su lugar' : `${placedPhotos} de 4 recuerdos colocados`;
+    showMemory(photoNumber, source);
+    successSound();
+    if (placedPhotos === 4) photoTray.classList.add('complete');
+  } else {
+    const wrongSlot = activeSlot;
+    if (wrongSlot) wrongSlot.classList.add('wrong');
+    puzzleInstruction.textContent = 'Ese recuerdo no va ahí · prueba otra vez';
+    errorSound();
+    setTimeout(() => {
+      if (wrongSlot) wrongSlot.classList.remove('wrong');
+      if (placedPhotos < 4) puzzleInstruction.textContent = 'Arrastra cada recuerdo hasta su lugar';
+    }, 900);
+  }
+
+  if (activeSlot) activeSlot.classList.remove('target');
+  if (dragGhost) dragGhost.remove();
+  dragGhost = null;
+  activeSlot = null;
+  activeTrayPhoto = null;
+}
+
+function showMemory(number, source) {
+  memoryImage.src = source;
+  memoryMessage.textContent = memoryMessages[number];
+  memoryModal.classList.add('visible');
+  memoryModal.setAttribute('aria-hidden', 'false');
+}
+
+function closeMemory() {
+  memoryModal.classList.remove('visible');
+  memoryModal.setAttribute('aria-hidden', 'true');
+}
+
+trayPhotos.forEach((photo) => photo.addEventListener('touchstart', startPhotoDrag, { passive: false }));
+document.addEventListener('touchmove', dragPhoto, { passive: false });
+document.addEventListener('touchend', finishPhotoDrag, { passive: true });
+document.addEventListener('touchcancel', finishPhotoDrag, { passive: true });
+memoryClose.addEventListener('click', closeMemory);
 
 dial.addEventListener('touchstart', startTouch, { passive: false });
 dial.addEventListener('touchmove', moveTouch, { passive: false });

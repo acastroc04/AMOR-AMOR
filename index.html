@@ -96,25 +96,26 @@
           <span class="pressed-flower flower-two">❧</span>
           <p class="album-kicker">Nuestro pequeño mundo</p>
           <h2>Cuatro momentos,<br><em>un millón de recuerdos.</em></h2>
+          <p class="puzzle-instruction">Arrastra cada recuerdo hasta su lugar</p>
           <div class="photos">
-            <figure class="polaroid photo-1"><span class="tape"></span>
-              <div class="photo-frame"><img src="img/Karla-1.jpg" alt="Karla, recuerdo número uno"><span
-                  class="placeholder">01</span></div>
+            <figure class="polaroid photo-1 photo-slot" data-slot="1"><span class="tape"></span>
+              <div class="photo-frame"><img alt="Karla, recuerdo número uno"><span
+                  class="placeholder">01</span><span class="drop-hint">SUELTA AQUÍ</span></div>
               <figcaption>Ese día contigo ♡</figcaption>
             </figure>
-            <figure class="polaroid photo-2"><span class="tape"></span>
-              <div class="photo-frame"><img src="img/Karla-2.jpg" alt="Karla, recuerdo número dos"><span
-                  class="placeholder">02</span></div>
+            <figure class="polaroid photo-2 photo-slot" data-slot="2"><span class="tape"></span>
+              <div class="photo-frame"><img alt="Karla, recuerdo número dos"><span
+                  class="placeholder">02</span><span class="drop-hint">SUELTA AQUÍ</span></div>
               <figcaption>Mi lugar favorito</figcaption>
             </figure>
-            <figure class="polaroid photo-3"><span class="tape"></span>
-              <div class="photo-frame"><img src="img/Karla-3.jpg" alt="Karla, recuerdo número tres"><span
-                  class="placeholder">03</span></div>
+            <figure class="polaroid photo-3 photo-slot" data-slot="3"><span class="tape"></span>
+              <div class="photo-frame"><img alt="Karla, recuerdo número tres"><span
+                  class="placeholder">03</span><span class="drop-hint">SUELTA AQUÍ</span></div>
               <figcaption>Tú y tu sonrisa</figcaption>
             </figure>
-            <figure class="polaroid photo-4"><span class="tape"></span>
-              <div class="photo-frame"><img src="img/Karla-4.jpg" alt="Karla, recuerdo número cuatro"><span
-                  class="placeholder">04</span></div>
+            <figure class="polaroid photo-4 photo-slot" data-slot="4"><span class="tape"></span>
+              <div class="photo-frame"><img alt="Karla, recuerdo número cuatro"><span
+                  class="placeholder">04</span><span class="drop-hint">SUELTA AQUÍ</span></div>
               <figcaption>Siempre nosotros</figcaption>
             </figure>
           </div>
@@ -128,6 +129,21 @@
           <span class="cover-ornament top">◆</span><span class="cover-heart">♥</span>
           <strong>A + K</strong><small>PARA SIEMPRE</small>
           <span class="cover-ornament bottom">◆</span><span class="cover-clasp"></span>
+        </div>
+      </div>
+      <div class="photo-tray" id="photoTray" aria-label="Fotos para ordenar">
+        <span class="tray-title">RECUERDOS</span>
+        <button class="tray-photo" type="button" data-photo="3" aria-label="Arrastrar foto 3"><img src="img/Karla-3.jpg" alt=""></button>
+        <button class="tray-photo" type="button" data-photo="1" aria-label="Arrastrar foto 1"><img src="img/Karla-1.jpg" alt=""></button>
+        <button class="tray-photo" type="button" data-photo="4" aria-label="Arrastrar foto 4"><img src="img/Karla-4.jpg" alt=""></button>
+        <button class="tray-photo" type="button" data-photo="2" aria-label="Arrastrar foto 2"><img src="img/Karla-2.jpg" alt=""></button>
+      </div>
+      <div class="memory-modal" id="memoryModal" aria-hidden="true">
+        <div class="memory-card">
+          <button class="memory-close" id="memoryClose" type="button" aria-label="Cerrar recuerdo">×</button>
+          <img id="memoryImage" alt="Recuerdo ampliado">
+          <p id="memoryMessage"></p>
+          <span class="memory-heart">♥</span>
         </div>
       </div>
     </section>

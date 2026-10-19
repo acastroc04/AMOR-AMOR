@@ -81,6 +81,7 @@ h1 em { color: #dfb4ba; font-weight: 500; }
 .album-kicker { position:relative; margin:0; color:#9d6e68; font-size:.55rem; font-weight:600; letter-spacing:.25em; text-transform:uppercase; }
 .book-pages h2 { position:relative; margin:7px 0 20px; font:600 clamp(1.65rem,6vw,2.7rem)/.9 "Cormorant Garamond",serif; }
 .book-pages h2 em { color:#9d4a5d; }
+.puzzle-instruction { position:relative; z-index:4; margin:-12px 0 13px; color:#987266; font:600 .48rem Montserrat,sans-serif; letter-spacing:.12em; text-transform:uppercase; }
 .photos { position:relative; display:grid; grid-template-columns:1fr 1fr; gap:10px 8px; max-width:540px; margin:auto; }
 .polaroid { margin:0; padding:7px 7px 12px; background:#faf6ee; box-shadow:0 5px 13px rgba(62,40,37,.25); transform:rotate(var(--tilt)); }
 .photo-1{--tilt:-3deg}.photo-2{--tilt:2.5deg}.photo-3{--tilt:2deg}.photo-4{--tilt:-2.8deg}
@@ -88,6 +89,7 @@ h1 em { color: #dfb4ba; font-weight: 500; }
 .photo-frame img { position:absolute; z-index:2; inset:0; width:100%; height:100%; object-fit:cover; }
 .photo-frame img:not([src]),.photo-frame img.broken { display:none; }
 .placeholder { position:absolute; inset:0; display:grid; place-items:center; color:rgba(255,255,255,.72); font:italic 2.5rem "Cormorant Garamond",serif; }
+.drop-hint { position:absolute; z-index:1; left:0; right:0; bottom:9px; color:rgba(255,255,255,.63); font:600 .38rem Montserrat,sans-serif; letter-spacing:.13em; }
 figcaption { padding-top:8px; color:#574047; font:italic 600 clamp(.78rem,3.5vw,1rem) "Cormorant Garamond",serif; }
 .love-note { position:relative; margin:16px 0 8px; font:italic 500 1rem/1.25 "Cormorant Garamond",serif; }
 .signature { position:relative; color:#8c6168; font-size:.56rem; letter-spacing:.12em; text-transform:uppercase; }
@@ -189,6 +191,11 @@ figcaption { padding-top:8px; color:#574047; font:italic 600 clamp(.78rem,3.5vw,
 .tape { position:absolute; z-index:5; width:38px; height:13px; top:-7px; left:50%; background:rgba(213,183,137,.58); box-shadow:0 1px 2px rgba(80,52,38,.2); transform:translateX(-50%) rotate(-2deg); clip-path:polygon(3% 8%,98% 0,94% 100%,0 91%); }
 .photo-2 .tape,.photo-3 .tape{transform:translateX(-50%) rotate(3deg);background:rgba(190,139,139,.48)}
 .photo-frame { border:1px solid rgba(78,49,44,.22); box-shadow:inset 0 0 12px rgba(43,18,24,.18); }
+.photo-slot { transition:transform .28s,box-shadow .28s; }
+.photo-slot.target { transform:rotate(var(--tilt)) scale(1.04); box-shadow:0 0 0 2px #d8ad70,0 8px 17px rgba(62,40,37,.34); }
+.photo-slot.correct .placeholder,.photo-slot.correct .drop-hint { display:none; }
+.photo-slot.correct { box-shadow:0 7px 16px rgba(62,40,37,.34),0 0 0 1px rgba(161,110,80,.25); }
+.photo-slot.wrong { animation:slotWrong .38s ease; }
 figcaption { color:#5a3b43; text-shadow:0 1px #fff; }
 .love-note::before,.love-note::after { content:"—"; margin:0 6px; color:#b88d78; }
 .signature { letter-spacing:.16em; }
@@ -205,6 +212,25 @@ figcaption { color:#5a3b43; text-shadow:0 1px #fff; }
 .cover-clasp { right:-7px; top:48%; width:21px; height:34px; }
 .cc-tl,.cc-tr,.cc-bl,.cc-br { z-index:4; width:34px; height:34px; top:auto; right:auto; bottom:auto; left:auto; }
 .cc-tl{top:7px;left:7px}.cc-tr{top:7px;right:7px}.cc-bl{bottom:7px;left:7px}.cc-br{bottom:7px;right:7px}
+.photo-tray { position:fixed; z-index:22; left:50%; bottom:max(9px,env(safe-area-inset-bottom)); width:min(94vw,440px); height:73px; display:flex; align-items:center; justify-content:center; gap:9px; padding:19px 13px 8px; border:1px solid rgba(218,181,119,.45); border-radius:12px; background:linear-gradient(145deg,rgba(35,12,22,.97),rgba(83,28,48,.97)); box-shadow:0 12px 28px rgba(0,0,0,.58),inset 0 0 0 3px rgba(34,9,18,.65),inset 0 0 0 4px rgba(213,170,99,.2); opacity:0; visibility:hidden; transform:translate(-50%,20px); transition:.5s; touch-action:none; }
+.album-scene.puzzle-ready .photo-tray { opacity:1; visibility:visible; transform:translate(-50%,0); }
+.photo-tray.complete { opacity:0!important; visibility:hidden!important; transform:translate(-50%,24px)!important; pointer-events:none; }
+.tray-title { position:absolute; top:5px; left:0; right:0; color:#c7a576; font:600 .42rem Montserrat,sans-serif; letter-spacing:.28em; }
+.tray-photo { position:relative; width:48px; height:44px; padding:3px; border:0; border-radius:2px; background:#f5ead6; box-shadow:0 3px 7px #17070e; transform:rotate(var(--tray-tilt)); touch-action:none; -webkit-tap-highlight-color:transparent; }
+.tray-photo:nth-of-type(1){--tray-tilt:-3deg}.tray-photo:nth-of-type(2){--tray-tilt:2deg}.tray-photo:nth-of-type(3){--tray-tilt:-1deg}.tray-photo:nth-of-type(4){--tray-tilt:3deg}
+.tray-photo img { display:block; width:100%; height:100%; object-fit:cover; pointer-events:none; }
+.tray-photo.placed { opacity:0; visibility:hidden; pointer-events:none; transform:scale(.5); transition:.35s; }
+.drag-ghost { position:fixed; z-index:60; width:76px; height:76px; padding:5px; border-radius:3px; background:#fff8e9; box-shadow:0 14px 30px rgba(0,0,0,.55); pointer-events:none; transform:translate(-50%,-50%) rotate(3deg) scale(1.06); }
+.drag-ghost img { width:100%; height:100%; object-fit:cover; }
+.memory-modal { position:fixed; z-index:70; inset:0; display:grid; place-items:center; padding:18px; background:rgba(18,7,12,.84); backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px); opacity:0; visibility:hidden; transition:.35s; }
+.memory-modal.visible { opacity:1; visibility:visible; }
+.memory-card { position:relative; width:min(88vw,390px); padding:12px 12px 20px; border:1px solid #d1b17a; border-radius:5px; background:linear-gradient(145deg,#fffaf0,#e8d9c1); box-shadow:0 25px 60px #12050b; transform:scale(.72) rotate(-2deg); transition:.45s cubic-bezier(.18,.8,.2,1); }
+.memory-modal.visible .memory-card { transform:scale(1) rotate(-1deg); }
+.memory-card img { display:block; width:100%; max-height:62svh; aspect-ratio:4/5; object-fit:cover; border:1px solid rgba(90,55,48,.25); }
+.memory-close { position:absolute; z-index:3; top:-14px; right:-12px; width:34px; height:34px; border:1px solid #d4b77f; border-radius:50%; color:#f4dfc0; background:#52182e; box-shadow:0 4px 10px rgba(0,0,0,.4); font:400 1.5rem/1 Montserrat,sans-serif; }
+.memory-card p { margin:14px 0 2px; color:#533640; font:italic 600 1.25rem "Cormorant Garamond",serif; }
+.memory-heart { display:block; color:#b82446; font-size:1.25rem; text-shadow:0 1px #fff; }
+@keyframes slotWrong { 20%,60%{transform:rotate(var(--tilt)) translateX(-6px)}40%,80%{transform:rotate(var(--tilt)) translateX(6px)} }
 .hearts { position:fixed; z-index:30; inset:0; pointer-events:none; overflow:hidden; }
 .floating-heart { position:absolute; bottom:-30px; color:#d88999; animation:floatUp var(--time) ease-out forwards; opacity:0; }
 @keyframes breathe { to{opacity:.45} }
