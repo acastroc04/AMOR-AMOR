@@ -20,16 +20,15 @@ function pointerAngle(point) {
   return Math.atan2(point.clientY - (box.top + box.height / 2), point.clientX - (box.left + box.width / 2)) * 180 / Math.PI;
 }
 
-function beginTurn(event) {
+function beginTurn(point) {
   if (unlocked) return;
   dragging = true;
-  lastAngle = pointerAngle(event);
-  dial.setPointerCapture?.(event.pointerId);
+  lastAngle = pointerAngle(point);
 }
 
-function turn(event) {
+function turn(point) {
   if (!dragging || unlocked) return;
-  const angle = pointerAngle(event);
+  const angle = pointerAngle(point);
   let delta = angle - lastAngle;
   if (delta > 180) delta -= 360;
   if (delta < -180) delta += 360;
@@ -47,9 +46,20 @@ function turn(event) {
   }
 }
 
-function endTurn(event) {
+function endTurn() {
   dragging = false;
-  if (event?.pointerId !== undefined && dial.hasPointerCapture?.(event.pointerId)) dial.releasePointerCapture(event.pointerId);
+}
+
+function startTouch(event) {
+  if (!event.touches.length) return;
+  event.preventDefault();
+  beginTurn(event.touches[0]);
+}
+
+function moveTouch(event) {
+  if (!dragging || !event.touches.length) return;
+  event.preventDefault();
+  turn(event.touches[0]);
 }
 
 function unlock() {
@@ -91,10 +101,14 @@ albumButton.addEventListener('click', () => {
   makeHearts();
 });
 
-dial.addEventListener('pointerdown', beginTurn);
-window.addEventListener('pointermove', turn, { passive: true });
-window.addEventListener('pointerup', endTurn);
-window.addEventListener('pointercancel', endTurn);
+dial.addEventListener('touchstart', startTouch, { passive: false });
+dial.addEventListener('touchmove', moveTouch, { passive: false });
+dial.addEventListener('touchend', endTurn, { passive: true });
+dial.addEventListener('touchcancel', endTurn, { passive: true });
+
+dial.addEventListener('mousedown', beginTurn);
+window.addEventListener('mousemove', turn);
+window.addEventListener('mouseup', endTurn);
 dial.addEventListener('keydown', (event) => {
   if (unlocked || !['ArrowLeft', 'ArrowRight', ' '].includes(event.key)) return;
   event.preventDefault();
