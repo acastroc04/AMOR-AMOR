@@ -700,12 +700,12 @@ finalEnvelope.addEventListener('touchstart', startEnvelopeSwipe, { passive: fals
 finalEnvelope.addEventListener('touchmove', moveEnvelopeSwipe, { passive: false });
 finalEnvelope.addEventListener('touchend', finishEnvelopeSwipe, { passive: true });
 finalEnvelope.addEventListener('touchcancel', finishEnvelopeSwipe, { passive: true });
-giftBox.addEventListener('click', () => giftReward.classList.add('unwrapped'));
-goldTeaser.addEventListener('click', () => {
+giftBox?.addEventListener('click', () => giftReward.classList.add('unwrapped'));
+goldTeaser?.addEventListener('click', () => {
   giftReward.classList.add('gold-expanded');
   goldModal.setAttribute('aria-hidden', 'false');
 });
-goldClose.addEventListener('click', () => {
+goldClose?.addEventListener('click', () => {
   giftReward.classList.remove('gold-expanded');
   goldModal.setAttribute('aria-hidden', 'true');
 });
