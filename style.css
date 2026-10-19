@@ -359,7 +359,7 @@ figcaption { color:#5a3b43; text-shadow:0 1px #fff; }
 .envelope-front::after { content:""; position:absolute; inset:43% 0 0; background:#e4cba3; clip-path:polygon(0 100%,0 0,50% 58%,100% 0,100% 100%); }
 .envelope-flap { position:absolute; z-index:5; inset:0 0 36%; background:linear-gradient(160deg,#f5e7ca,#d9bd91); clip-path:polygon(0 0,100% 0,50% 100%); transform-origin:top; transition:transform .68s cubic-bezier(.2,.7,.2,1),z-index 0s .32s; filter:drop-shadow(0 2px 1px rgba(94,63,40,.28)); }
 .final-wax-seal { top:48%; transition:opacity .35s,transform .55s; }
-.final-letter { position:absolute; z-index:2; left:6%; right:6%; bottom:8%; min-height:126%; padding:25px 22px 20px; border:1px solid #b99b72; color:#56353a; text-align:left; background:linear-gradient(rgba(255,249,231,.93),rgba(248,235,208,.96)),repeating-linear-gradient(0deg,transparent 0 23px,rgba(133,89,75,.1) 24px); box-shadow:0 4px 13px rgba(56,29,22,.35),inset 0 0 18px rgba(161,118,76,.12); transform:translateY(53%); transition:transform .82s cubic-bezier(.17,.75,.18,1) .32s; }
+.final-letter { position:absolute; z-index:2; left:6%; right:6%; bottom:8%; min-height:126%; padding:25px 22px 20px; border:1px solid #b99b72; color:#56353a; text-align:left; background:linear-gradient(rgba(255,249,231,.93),rgba(248,235,208,.96)),repeating-linear-gradient(0deg,transparent 0 23px,rgba(133,89,75,.1) 24px); box-shadow:0 4px 13px rgba(56,29,22,.35),inset 0 0 18px rgba(161,118,76,.12); opacity:0; visibility:hidden; transform:translateY(53%); transition:transform .82s cubic-bezier(.17,.75,.18,1) .38s,opacity .14s .38s,visibility 0s .38s; }
 .final-letter::before { content:""; position:absolute; inset:8px; border:1px solid rgba(151,105,77,.18); pointer-events:none; }
 .letter-date { display:block; margin-bottom:9px; color:#a67b62; text-align:center; font:600 .38rem Montserrat,sans-serif; letter-spacing:.22em; }
 .final-letter h3 { margin:0 0 10px; color:#762f43; font:italic 600 1.45rem "Cormorant Garamond",serif; }
@@ -369,7 +369,7 @@ figcaption { color:#5a3b43; text-shadow:0 1px #fff; }
 .letter-scene.open .envelope-flap { z-index:1; transform:rotateX(180deg); }
 .letter-scene.open .final-wax-seal { opacity:0; transform:translate(-50%,-90%) rotate(25deg) scale(.35); }
 .letter-scene.open .standalone-envelope { transform:translateY(45px); }
-.letter-scene.open .final-letter { z-index:3; transform:translateY(-43%); }
+.letter-scene.open .final-letter { z-index:3; opacity:1; visibility:visible; transform:translateY(-43%); }
 .letter-scene.open .letter-kicker,.letter-scene.open>h2 { opacity:0; transform:translateY(-12px); }
 .letter-scene.open .swipe-hint { transform:translateY(28px); }
 @keyframes swipeUp { to{transform:translateY(-5px)} }
