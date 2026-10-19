@@ -571,8 +571,8 @@ function showEnvelopeBack() {
   setTimeout(() => {
     tornPuzzleScene.classList.add('back-visible');
     tornPuzzleScene.classList.remove('flipping');
-  }, 520);
-  setTimeout(() => { framedEnvelope.disabled = false; }, 1050);
+  }, 360);
+  setTimeout(() => { framedEnvelope.disabled = false; }, 740);
 }
 
 function focusFinalEnvelope() {
