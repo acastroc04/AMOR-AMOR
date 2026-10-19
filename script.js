@@ -38,6 +38,11 @@ const framedEnvelope = document.querySelector('#framedEnvelope');
 const letterScene = document.querySelector('#letterScene');
 const finalEnvelope = document.querySelector('#finalEnvelope');
 const swipeHint = document.querySelector('#swipeHint');
+const giftReward = document.querySelector('#giftReward');
+const giftBox = document.querySelector('#giftBox');
+const goldTeaser = document.querySelector('#goldTeaser');
+const goldModal = document.querySelector('#goldModal');
+const goldClose = document.querySelector('#goldClose');
 
 const combination = [14, 25, 16];
 const degreesPerNumber = 360 / 60;
@@ -613,6 +618,10 @@ function finishEnvelopeSwipe(event) {
   letterOpened = true;
   letterScene.classList.add('open');
   swipeHint.innerHTML = '<span>♡</span> Para ti, con todo mi amor';
+  setTimeout(() => {
+    giftReward.classList.add('visible');
+    giftReward.setAttribute('aria-hidden', 'false');
+  }, 10000);
 }
 
 function togglePlayback() {
@@ -690,6 +699,15 @@ finalEnvelope.addEventListener('touchstart', startEnvelopeSwipe, { passive: fals
 finalEnvelope.addEventListener('touchmove', moveEnvelopeSwipe, { passive: false });
 finalEnvelope.addEventListener('touchend', finishEnvelopeSwipe, { passive: true });
 finalEnvelope.addEventListener('touchcancel', finishEnvelopeSwipe, { passive: true });
+giftBox.addEventListener('click', () => giftReward.classList.add('unwrapped'));
+goldTeaser.addEventListener('click', () => {
+  giftReward.classList.add('gold-expanded');
+  goldModal.setAttribute('aria-hidden', 'false');
+});
+goldClose.addEventListener('click', () => {
+  giftReward.classList.remove('gold-expanded');
+  goldModal.setAttribute('aria-hidden', 'true');
+});
 
 dial.addEventListener('touchstart', startTouch, { passive: false });
 dial.addEventListener('touchmove', moveTouch, { passive: false });
