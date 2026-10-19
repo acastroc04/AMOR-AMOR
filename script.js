@@ -15,9 +15,9 @@ let distance = 0;
 let completedTurns = 0;
 let unlocked = false;
 
-function pointerAngle(event) {
+function pointerAngle(point) {
   const box = dial.getBoundingClientRect();
-  return Math.atan2(event.clientY - (box.top + box.height / 2), event.clientX - (box.left + box.width / 2)) * 180 / Math.PI;
+  return Math.atan2(point.clientY - (box.top + box.height / 2), point.clientX - (box.left + box.width / 2)) * 180 / Math.PI;
 }
 
 function beginTurn(event) {
@@ -50,6 +50,24 @@ function turn(event) {
 function endTurn(event) {
   dragging = false;
   if (event?.pointerId !== undefined && dial.hasPointerCapture?.(event.pointerId)) dial.releasePointerCapture(event.pointerId);
+}
+
+function beginTouch(event) {
+  if (unlocked || !event.touches.length) return;
+  event.preventDefault();
+  dragging = true;
+  lastAngle = pointerAngle(event.touches[0]);
+}
+
+function moveTouch(event) {
+  if (!dragging || unlocked || !event.touches.length) return;
+  event.preventDefault();
+  turn(event.touches[0]);
+}
+
+function endTouch(event) {
+  event.preventDefault();
+  dragging = false;
 }
 
 function unlock() {
@@ -95,6 +113,10 @@ dial.addEventListener('pointerdown', beginTurn);
 window.addEventListener('pointermove', turn, { passive: true });
 window.addEventListener('pointerup', endTurn);
 window.addEventListener('pointercancel', endTurn);
+dial.addEventListener('touchstart', beginTouch, { passive: false });
+dial.addEventListener('touchmove', moveTouch, { passive: false });
+dial.addEventListener('touchend', endTouch, { passive: false });
+dial.addEventListener('touchcancel', endTouch, { passive: false });
 dial.addEventListener('keydown', (event) => {
   if (unlocked || !['ArrowLeft', 'ArrowRight', ' '].includes(event.key)) return;
   event.preventDefault();
@@ -109,7 +131,7 @@ dial.addEventListener('keydown', (event) => {
   }
 });
 
-const freshVersion = new URL(location.href).searchParams.get('_fresh') || Date.now();
+const freshVersion = '4';
 document.querySelectorAll('.photo-frame img').forEach((image) => {
   image.addEventListener('error', () => image.classList.add('broken'));
   image.src = `${image.dataset.src}?_fresh=${freshVersion}`;
