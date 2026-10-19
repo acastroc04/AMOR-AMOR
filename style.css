@@ -301,6 +301,32 @@ figcaption { color:#5a3b43; text-shadow:0 1px #fff; }
 .music-continue strong { grid-column:1; font:italic 600 1.25rem "Cormorant Garamond",serif; }
 .music-continue span { grid-column:2; grid-row:1/3; color:#e5bd78; font-size:1.25rem; }
 .music-continue:active { transform:translateY(2px) scale(.98); }
+.turntable-scene.leaving { opacity:0; transform:translateX(-110vw) rotate(-5deg) scale(.78); }
+.torn-puzzle-scene { position:fixed; z-index:26; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:max(12px,env(safe-area-inset-top)) 12px max(12px,env(safe-area-inset-bottom)); color:#f0dfd2; text-align:center; background:radial-gradient(circle at 50% 38%,rgba(125,70,48,.34),transparent 53%); opacity:0; visibility:hidden; transform:translateX(105vw) scale(.88); transition:opacity .65s,transform .95s cubic-bezier(.18,.82,.2,1),visibility .65s; }
+.torn-puzzle-scene.visible { opacity:1; visibility:visible; transform:translateX(0) scale(1); }
+.torn-kicker { margin:0 0 2px; color:#d0a56a; font:600 .45rem Montserrat,sans-serif; letter-spacing:.2em; }
+.torn-puzzle-scene h2 { margin:0 0 8px; color:#f1d9d0; font:italic 600 clamp(1.7rem,8vw,2.5rem) "Cormorant Garamond",serif; text-shadow:0 2px 8px #18070d; }
+.wood-frame { width:min(57vw,245px); padding:12px; border:2px solid #4a2617; background:linear-gradient(135deg,#5a2d19,#b0703e 20%,#65351f 43%,#a96538 68%,#4c2618); box-shadow:0 16px 28px rgba(10,3,3,.65),inset 0 0 0 3px #2b150e,inset 0 0 0 5px rgba(232,181,107,.28); transform:rotate(-.5deg); }
+.torn-board { position:relative; width:100%; aspect-ratio:2/3; display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(4,1fr); overflow:hidden; background:repeating-linear-gradient(135deg,#241317 0 8px,#1d0e12 8px 16px); box-shadow:inset 0 0 15px #0c0506; }
+.torn-board::after { content:""; position:absolute; z-index:5; inset:0; background:url('img/FotoRota.jpg') center/cover; opacity:0; pointer-events:none; transition:opacity .7s ease .2s; }
+.torn-puzzle-scene.complete .torn-board::after { opacity:1; }
+.torn-slot { position:relative; min-width:0; min-height:0; padding:0; border:1px dashed rgba(235,200,151,.18); background:rgba(21,10,12,.62); -webkit-tap-highlight-color:transparent; }
+.torn-slot::after { content:""; position:absolute; inset:42%; border-radius:50%; background:rgba(231,194,137,.16); }
+.torn-slot.filled { border-color:transparent; background:none; }
+.torn-slot.filled::after { display:none; }
+.torn-slot.wrong { animation:tornWrong .4s ease; background:rgba(126,31,50,.52); }
+.torn-instruction { min-height:17px; margin:7px 0 5px; color:#d8bda9; font:italic 600 .86rem "Cormorant Garamond",serif; }
+.piece-bank { width:min(91vw,390px); min-height:101px; display:grid; grid-template-columns:repeat(6,1fr); gap:4px; padding:7px; border:1px solid rgba(205,160,96,.42); border-radius:9px; background:linear-gradient(145deg,rgba(48,19,21,.95),rgba(84,39,31,.94)); box-shadow:inset 0 0 0 3px rgba(37,13,18,.85),0 9px 18px rgba(9,2,4,.38); }
+.torn-piece { width:100%; aspect-ratio:8/9; padding:0; border:0; background-image:url('img/FotoRota.jpg'); background-size:300% 400%; background-position:var(--piece-x) var(--piece-y); clip-path:var(--piece-shape); filter:drop-shadow(1px 2px 1px rgba(0,0,0,.7)); touch-action:none; -webkit-touch-callout:none; -webkit-user-select:none; transition:transform .18s,filter .18s,opacity .18s; }
+.torn-piece.selected { transform:translateY(-3px) scale(1.08); filter:drop-shadow(0 0 5px #edc382); }
+.torn-piece.dragging { opacity:.2; }
+.torn-slot .torn-piece { position:absolute; inset:0; width:100%; height:100%; aspect-ratio:auto; transform:none; filter:none; pointer-events:none; }
+.piece-ghost { position:fixed; z-index:90; margin:0; transform:translate(-50%,-55%) scale(1.06); pointer-events:none; filter:drop-shadow(0 8px 7px rgba(0,0,0,.72)); }
+.torn-puzzle-scene.complete .piece-bank { opacity:0; min-height:0; height:0; margin:0; padding:0; border:0; overflow:hidden; transition:opacity .35s,height .5s,min-height .5s,padding .5s; }
+.puzzle-next { width:min(84vw,330px); min-height:58px; margin:9px 0 0; display:grid; grid-template-columns:1fr auto; grid-template-rows:auto auto; align-items:center; padding:8px 17px; border:1px solid #d3ad6d; border-radius:9px; color:#f0d6bb; background:linear-gradient(115deg,#32101e,#762943 48%,#3b1123); box-shadow:0 12px 25px rgba(11,3,7,.58),inset 0 0 0 3px #3a1022,inset 0 0 0 4px rgba(219,177,104,.4); opacity:0; visibility:hidden; transform:translateY(14px) scale(.95); transition:.45s; }
+.torn-puzzle-scene.complete .puzzle-next { opacity:1; visibility:visible; transform:translateY(0) scale(1); }
+.puzzle-next small { grid-column:1; color:#bd9984; font:600 .38rem Montserrat,sans-serif; letter-spacing:.16em; }.puzzle-next strong{grid-column:1;font:italic 600 1.25rem "Cormorant Garamond",serif}.puzzle-next span{grid-column:2;grid-row:1/3;color:#e5bd78;font-size:1.25rem}
+@keyframes tornWrong { 25%,75%{transform:translateX(-4px)}50%{transform:translateX(4px)} }
 @keyframes recordSpin { to{transform:rotate(360deg)} }
 .hearts { position:fixed; z-index:30; inset:0; pointer-events:none; overflow:hidden; }
 .floating-heart { position:absolute; bottom:-30px; color:#d88999; animation:floatUp var(--time) ease-out forwards; opacity:0; }

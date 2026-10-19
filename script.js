@@ -28,6 +28,11 @@ const durationDisplay = document.querySelector('#duration');
 const audioStatus = document.querySelector('#audioStatus');
 const fifteenHint = document.querySelector('#fifteenHint');
 const musicContinue = document.querySelector('#musicContinue');
+const tornPuzzleScene = document.querySelector('#tornPuzzleScene');
+const tornBoard = document.querySelector('#tornBoard');
+const pieceBank = document.querySelector('#pieceBank');
+const tornInstruction = document.querySelector('#tornInstruction');
+const puzzleNext = document.querySelector('#puzzleNext');
 
 const combination = [20, 18, 45];
 const degreesPerNumber = 360 / 60;
@@ -50,6 +55,10 @@ const loveMomentLatestStart = 89.99;
 const loveMomentEnd = 103;
 let loveMomentEligible = false;
 let loveMomentUnlocked = false;
+let activePuzzlePiece = null;
+let puzzlePieceGhost = null;
+let selectedPuzzlePiece = null;
+let completedPuzzlePieces = 0;
 
 const memoryMessages = {
   1: 'Ese día contigo ♡',
@@ -388,6 +397,114 @@ function unlockLoveMoment() {
   audioStatus.textContent = 'Has encontrado nuestros 15 segundos';
 }
 
+const tornShapes = [
+  'polygon(0 0,91% 0,96% 13%,90% 28%,100% 42%,94% 59%,98% 76%,89% 100%,0 100%,5% 80%,0 64%,6% 45%,1% 25%)',
+  'polygon(7% 0,100% 0,95% 22%,100% 38%,93% 55%,99% 75%,94% 100%,5% 100%,0 80%,6% 62%,0 44%,7% 25%)',
+  'polygon(3% 0,100% 0,100% 100%,5% 100%,0 79%,7% 61%,1% 42%,8% 24%)',
+  'polygon(0 5%,20% 0,39% 6%,58% 0,77% 5%,100% 1%,95% 22%,100% 41%,94% 59%,99% 79%,92% 100%,0 100%,5% 77%,0 58%,6% 39%)',
+  'polygon(5% 3%,23% 0,42% 6%,61% 0,80% 5%,96% 1%,100% 22%,94% 41%,100% 60%,93% 80%,98% 100%,6% 100%,0 79%,7% 60%,1% 40%,8% 21%)',
+  'polygon(4% 2%,23% 0,42% 5%,61% 0,80% 6%,100% 1%,100% 100%,5% 100%,0 78%,7% 59%,1% 39%,8% 20%)',
+  'polygon(0 4%,19% 0,39% 6%,58% 0,78% 5%,100% 2%,94% 23%,100% 43%,93% 62%,99% 81%,91% 100%,0 100%,6% 80%,0 61%,7% 42%)',
+  'polygon(6% 3%,24% 0,43% 6%,62% 0,81% 5%,96% 1%,100% 23%,93% 42%,100% 62%,92% 81%,98% 100%,5% 100%,0 79%,7% 60%,1% 40%)',
+  'polygon(4% 2%,23% 0,42% 5%,62% 0,81% 6%,100% 2%,100% 100%,5% 100%,0 78%,7% 58%,1% 39%,8% 20%)',
+  'polygon(0 3%,20% 0,40% 6%,60% 0,80% 5%,100% 1%,94% 24%,100% 45%,93% 65%,100% 83%,91% 100%,0 100%)',
+  'polygon(6% 2%,25% 0,44% 6%,63% 0,82% 5%,97% 1%,100% 23%,93% 43%,100% 63%,92% 82%,98% 100%,5% 100%,0 77%,7% 57%,1% 37%)',
+  'polygon(4% 2%,24% 0,43% 5%,63% 0,82% 6%,100% 1%,100% 100%,5% 100%,0 78%,7% 58%,1% 38%,8% 19%)'
+];
+
+function buildTornPuzzle() {
+  const order = [7, 1, 10, 4, 11, 2, 8, 0, 6, 3, 9, 5];
+  for (let index = 0; index < 12; index += 1) {
+    const slot = document.createElement('button');
+    slot.type = 'button';
+    slot.className = 'torn-slot';
+    slot.dataset.piece = index;
+    slot.setAttribute('aria-label', `Hueco ${index + 1}`);
+    slot.addEventListener('click', () => tryPlacePuzzlePiece(selectedPuzzlePiece, slot));
+    tornBoard.appendChild(slot);
+  }
+  order.forEach((index) => {
+    const piece = document.createElement('button');
+    const row = Math.floor(index / 3);
+    const column = index % 3;
+    piece.type = 'button';
+    piece.className = 'torn-piece';
+    piece.dataset.piece = index;
+    piece.style.setProperty('--piece-x', `${column * 50}%`);
+    piece.style.setProperty('--piece-y', `${row * 33.333}%`);
+    piece.style.setProperty('--piece-shape', tornShapes[index]);
+    piece.setAttribute('aria-label', `Pieza ${index + 1}`);
+    piece.addEventListener('touchstart', startPuzzlePieceDrag, { passive: false });
+    piece.addEventListener('click', () => selectPuzzlePiece(piece));
+    pieceBank.appendChild(piece);
+  });
+}
+
+function selectPuzzlePiece(piece) {
+  if (!piece || piece.classList.contains('placed')) return;
+  selectedPuzzlePiece?.classList.remove('selected');
+  selectedPuzzlePiece = piece;
+  piece.classList.add('selected');
+  tornInstruction.textContent = 'Ahora toca el hueco donde encaja';
+}
+
+function startPuzzlePieceDrag(event) {
+  const piece = event.currentTarget;
+  if (piece.classList.contains('placed')) return;
+  event.preventDefault();
+  selectPuzzlePiece(piece);
+  activePuzzlePiece = piece;
+  const boardRect = tornBoard.getBoundingClientRect();
+  puzzlePieceGhost = piece.cloneNode(true);
+  puzzlePieceGhost.classList.add('piece-ghost');
+  puzzlePieceGhost.style.width = `${boardRect.width / 3}px`;
+  puzzlePieceGhost.style.height = `${boardRect.height / 4}px`;
+  document.body.appendChild(puzzlePieceGhost);
+  piece.classList.add('dragging');
+  movePuzzlePiece(event);
+}
+
+function movePuzzlePiece(event) {
+  if (!activePuzzlePiece || !puzzlePieceGhost) return;
+  event.preventDefault();
+  const touch = event.touches[0];
+  puzzlePieceGhost.style.left = `${touch.clientX}px`;
+  puzzlePieceGhost.style.top = `${touch.clientY}px`;
+}
+
+function finishPuzzlePieceDrag(event) {
+  if (!activePuzzlePiece) return;
+  const touch = event.changedTouches[0];
+  const slot = document.elementFromPoint(touch.clientX, touch.clientY)?.closest('.torn-slot');
+  tryPlacePuzzlePiece(activePuzzlePiece, slot);
+  activePuzzlePiece.classList.remove('dragging');
+  puzzlePieceGhost?.remove();
+  activePuzzlePiece = null;
+  puzzlePieceGhost = null;
+}
+
+function tryPlacePuzzlePiece(piece, slot) {
+  if (!piece || !slot || piece.classList.contains('placed')) return;
+  if (piece.dataset.piece !== slot.dataset.piece) {
+    slot.classList.add('wrong');
+    setTimeout(() => slot.classList.remove('wrong'), 420);
+    tornInstruction.textContent = 'Ese pedacito no encaja ahí';
+    return;
+  }
+  piece.classList.remove('selected', 'dragging');
+  piece.classList.add('placed');
+  slot.classList.add('filled');
+  slot.appendChild(piece);
+  selectedPuzzlePiece = null;
+  completedPuzzlePieces += 1;
+  tornInstruction.textContent = completedPuzzlePieces === 12 ? 'Nuestro recuerdo vuelve a estar completo' : `${completedPuzzlePieces} de 12 pedacitos unidos`;
+  if (completedPuzzlePieces === 12) {
+    tornPuzzleScene.classList.add('complete');
+    puzzleNext.disabled = false;
+    puzzleNext.setAttribute('aria-hidden', 'false');
+  }
+}
+
 function togglePlayback() {
   if (auroraAudio.paused) {
     auroraAudio.play().then(() => {
@@ -442,6 +559,20 @@ memoryClose.addEventListener('click', closeMemory);
 continueButton.addEventListener('click', () => {
   if (placedPhotos === 4 && !puzzleFinished) finishAlbumPuzzle();
 });
+musicContinue.addEventListener('click', () => {
+  if (!loveMomentUnlocked) return;
+  auroraAudio.pause();
+  turntableScene.classList.add('leaving');
+  setTimeout(() => {
+    turntableScene.classList.remove('visible');
+    turntableScene.setAttribute('aria-hidden', 'true');
+    tornPuzzleScene.classList.add('visible');
+    tornPuzzleScene.setAttribute('aria-hidden', 'false');
+  }, 650);
+});
+document.addEventListener('touchmove', movePuzzlePiece, { passive: false });
+document.addEventListener('touchend', finishPuzzlePieceDrag, { passive: true });
+document.addEventListener('touchcancel', finishPuzzlePieceDrag, { passive: true });
 
 dial.addEventListener('touchstart', startTouch, { passive: false });
 dial.addEventListener('touchmove', moveTouch, { passive: false });
@@ -451,3 +582,5 @@ dial.addEventListener('touchcancel', finishTouch, { passive: true });
 document.querySelectorAll('.photo-frame img').forEach((image) => {
   image.addEventListener('error', () => image.classList.add('broken'));
 });
+
+buildTornPuzzle();
