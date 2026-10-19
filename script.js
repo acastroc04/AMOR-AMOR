@@ -60,6 +60,7 @@ let activePuzzlePiece = null;
 let puzzlePieceGhost = null;
 let selectedPuzzlePiece = null;
 let completedPuzzlePieces = 0;
+let suppressPuzzleClick = false;
 
 const memoryMessages = {
   1: 'Ese día contigo ♡',
@@ -436,13 +437,22 @@ function buildTornPuzzle() {
     piece.style.setProperty('--piece-shape', tornShapes[index]);
     piece.setAttribute('aria-label', `Pieza ${index + 1}`);
     piece.addEventListener('touchstart', startPuzzlePieceDrag, { passive: false });
-    piece.addEventListener('click', () => selectPuzzlePiece(piece));
+    piece.addEventListener('click', (event) => {
+      event.stopPropagation();
+      if (suppressPuzzleClick) return;
+      const occupiedSlot = piece.closest('.torn-slot');
+      if (occupiedSlot && selectedPuzzlePiece && selectedPuzzlePiece !== piece) {
+        tryPlacePuzzlePiece(selectedPuzzlePiece, occupiedSlot);
+      } else {
+        selectPuzzlePiece(piece);
+      }
+    });
     pieceBank.appendChild(piece);
   });
 }
 
 function selectPuzzlePiece(piece) {
-  if (!piece || piece.classList.contains('placed')) return;
+  if (!piece) return;
   selectedPuzzlePiece?.classList.remove('selected');
   selectedPuzzlePiece = piece;
   piece.classList.add('selected');
@@ -451,7 +461,6 @@ function selectPuzzlePiece(piece) {
 
 function startPuzzlePieceDrag(event) {
   const piece = event.currentTarget;
-  if (piece.classList.contains('placed')) return;
   event.preventDefault();
   selectPuzzlePiece(piece);
   activePuzzlePiece = piece;
@@ -475,6 +484,8 @@ function movePuzzlePiece(event) {
 
 function finishPuzzlePieceDrag(event) {
   if (!activePuzzlePiece) return;
+  suppressPuzzleClick = true;
+  setTimeout(() => { suppressPuzzleClick = false; }, 350);
   const touch = event.changedTouches[0];
   const slot = document.elementFromPoint(touch.clientX, touch.clientY)?.closest('.torn-slot');
   tryPlacePuzzlePiece(activePuzzlePiece, slot);
@@ -485,20 +496,37 @@ function finishPuzzlePieceDrag(event) {
 }
 
 function tryPlacePuzzlePiece(piece, slot) {
-  if (!piece || !slot || piece.classList.contains('placed')) return;
-  if (slot.classList.contains('filled')) {
-    slot.classList.add('occupied');
-    setTimeout(() => slot.classList.remove('occupied'), 360);
-    tornInstruction.textContent = 'Ese hueco ya tiene una pieza';
-    return;
+  if (!piece || !slot) return;
+  const originSlot = piece.closest('.torn-slot');
+  const displacedPiece = slot.querySelector('.torn-piece');
+  if (originSlot === slot) return;
+
+  if (displacedPiece) {
+    if (originSlot) {
+      originSlot.appendChild(displacedPiece);
+    } else {
+      displacedPiece.classList.remove('placed', 'selected', 'dragging');
+      pieceBank.appendChild(displacedPiece);
+    }
+  } else if (originSlot) {
+    originSlot.classList.remove('filled');
   }
+
   piece.classList.remove('selected', 'dragging');
   piece.classList.add('placed');
   slot.classList.add('filled');
   slot.appendChild(piece);
   selectedPuzzlePiece = null;
-  completedPuzzlePieces += 1;
+  if (!originSlot && !displacedPiece) completedPuzzlePieces += 1;
+  evaluateTornPuzzle();
+}
+
+function evaluateTornPuzzle() {
+  tornPuzzleScene.classList.remove('complete', 'needs-reset');
+  puzzleNext.disabled = true;
+  puzzleNext.setAttribute('aria-hidden', 'true');
   tornInstruction.textContent = `${completedPuzzlePieces} de 12 pedacitos colocados`;
+
   if (completedPuzzlePieces === 12) {
     const correctlyAssembled = [...tornBoard.querySelectorAll('.torn-slot')]
       .every((target) => target.firstElementChild?.dataset.piece === target.dataset.piece);
@@ -509,7 +537,7 @@ function tryPlacePuzzlePiece(piece, slot) {
       puzzleNext.setAttribute('aria-hidden', 'false');
     } else {
       tornPuzzleScene.classList.add('needs-reset');
-      tornInstruction.textContent = 'Hay pedacitos fuera de lugar… inténtalo otra vez';
+      tornInstruction.textContent = 'Hay pedacitos fuera de lugar… puedes intercambiarlos';
     }
   }
 }
