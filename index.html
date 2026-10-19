@@ -18,9 +18,12 @@
     <section class="intro" id="intro" aria-labelledby="title">
       <p class="eyebrow">PARA KARLA · CON AMOR</p>
       <h1 id="title">Una sorpresa<br><em>te aguarda adentro.</em></h1>
-      <p class="hint" id="hint">Gira la ruleta tres vueltas para abrirlo</p>
+      <p class="hint" id="hint">Descubre la combinación secreta</p>
 
       <div class="stage">
+        <div class="combo-progress" aria-label="Progreso de la combinación">
+          <span class="turn-dot"></span><span class="turn-dot"></span><span class="turn-dot"></span>
+        </div>
         <div class="safe" id="safe">
           <div class="safe-shell">
             <span class="shell-rivet r-tl"></span><span class="shell-rivet r-tr"></span>
@@ -35,16 +38,14 @@
                 <div class="hinge hinge-bottom"><i></i><i></i></div>
                 <div class="dial-wrap">
                   <div class="dial-shadow"></div>
-                  <div class="dial-scale" aria-hidden="true"><span>0</span><span>10</span><span>20</span><span>30</span><span>40</span><span>50</span><span>60</span><span>70</span></div>
+                  <div class="index-marker" aria-hidden="true"></div>
                   <button class="dial" id="dial" type="button" aria-label="Gira el dial de la caja fuerte" aria-describedby="hint">
+                    <span class="dial-scale" aria-hidden="true"><span>0</span><span>10</span><span>20</span><span>30</span><span>40</span><span>50</span><span>60</span></span>
                     <span class="dial-marker"></span>
                     <span class="dial-center"><span>♥</span></span>
                     <span class="notch n1"></span><span class="notch n2"></span><span class="notch n3"></span><span class="notch n4"></span>
                     <span class="notch n5"></span><span class="notch n6"></span><span class="notch n7"></span><span class="notch n8"></span>
                   </button>
-                </div>
-                <div class="turns" aria-live="polite">
-                  <span class="turn-dot"></span><span class="turn-dot"></span><span class="turn-dot"></span>
                 </div>
                 <div class="handle"><b></b><span></span><b></b></div>
                 <div class="serial">Nº 14 · 02 · ∞</div>
@@ -71,8 +72,13 @@
             </div>
           </div>
         </div>
+        <div class="dial-feedback" aria-live="polite">
+          <span class="feedback-label" id="feedbackLabel">NÚMERO ACTUAL</span>
+          <strong id="currentNumber">0</strong>
+          <small id="verifyState">Déjala quieta 3 segundos para verificar</small>
+        </div>
       </div>
-      <p class="drag-help" id="dragHelp">Desliza el dedo alrededor de la ruleta</p>
+      <p class="drag-help" id="dragHelp">Gira despacio · código de tres números</p>
     </section>
 
     <section class="album-scene" id="albumScene" aria-hidden="true">

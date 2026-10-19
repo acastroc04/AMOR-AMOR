@@ -30,7 +30,7 @@ button { font: inherit; }
 h1 { margin: 0; font: 600 clamp(2rem, 8vw, 4rem)/.93 "Cormorant Garamond", serif; letter-spacing: -.025em; }
 h1 em { color: #dfb4ba; font-weight: 500; }
 .hint { min-height: 20px; margin: 14px 0 0; color: #bba9ad; font-size: .7rem; letter-spacing: .04em; }
-.stage { display: grid; place-items: center; height: min(59svh, 500px); min-height: 350px; perspective: 1200px; }
+.stage { display: grid; grid-template-rows:24px 1fr 48px; place-items: center; gap:7px; height: min(64svh, 540px); min-height: 405px; perspective: 1200px; }
 .safe { position: relative; width: min(82vw, 330px); aspect-ratio: .88; filter: drop-shadow(0 28px 28px rgba(0,0,0,.45)); }
 .safe-shell { position: absolute; inset: 0; border: 9px solid #161317; border-radius: 22px; background: #130f12; box-shadow: inset 0 0 0 3px #6b6261, inset 0 0 24px #000, 0 0 0 2px #070607; transform-style: preserve-3d; }
 .safe-shell::before { content:""; position:absolute; inset:-15px -13px; z-index:-1; border-radius:27px; background:linear-gradient(135deg,#625d5c,#242124 25%,#0b090b 70%,#4a4647); }
@@ -123,23 +123,31 @@ figcaption { padding-top:8px; color:#574047; font:italic 600 clamp(.78rem,3.5vw,
 .hinge i:first-child{top:5px}.hinge i:last-child{bottom:5px}
 .dial-wrap { width:176px; height:176px; top:29%; }
 .dial-shadow { inset:-2px; border:1px solid #77706b; background:radial-gradient(circle,#111 61%,#69615c 63%,#1a1718 71%,#050405 73%); box-shadow:0 13px 18px #000,0 0 0 3px #171415; }
-.dial-scale { position:absolute; z-index:2; inset:-4px; pointer-events:none; border-radius:50%; color:#d1c1a5; font:500 7px Montserrat,sans-serif; }
-.dial-scale span { position:absolute; left:50%; top:50%; transform-origin:0 0; text-shadow:0 1px 2px #000; }
-.dial-scale span:nth-child(1){transform:rotate(0deg) translateY(-83px) rotate(0deg)}
-.dial-scale span:nth-child(2){transform:rotate(45deg) translateY(-83px) rotate(-45deg)}
-.dial-scale span:nth-child(3){transform:rotate(90deg) translateY(-83px) rotate(-90deg)}
-.dial-scale span:nth-child(4){transform:rotate(135deg) translateY(-83px) rotate(-135deg)}
-.dial-scale span:nth-child(5){transform:rotate(180deg) translateY(-83px) rotate(-180deg)}
-.dial-scale span:nth-child(6){transform:rotate(225deg) translateY(-83px) rotate(-225deg)}
-.dial-scale span:nth-child(7){transform:rotate(270deg) translateY(-83px) rotate(-270deg)}
-.dial-scale span:nth-child(8){transform:rotate(315deg) translateY(-83px) rotate(-315deg)}
+.dial-scale { position:absolute; z-index:4; inset:0; pointer-events:none; border-radius:50%; color:#ead6b2; font:600 7px Montserrat,sans-serif; }
+.dial-scale span { position:absolute; left:50%; top:50%; width:18px; margin-left:-9px; text-align:center; transform-origin:9px 0; text-shadow:0 1px 3px #000; }
+.dial-scale span:nth-child(1){transform:rotate(0deg) translateY(-54px) rotate(0deg)}
+.dial-scale span:nth-child(2){transform:rotate(59deg) translateY(-54px) rotate(-59deg)}
+.dial-scale span:nth-child(3){transform:rotate(118deg) translateY(-54px) rotate(-118deg)}
+.dial-scale span:nth-child(4){transform:rotate(177deg) translateY(-54px) rotate(-177deg)}
+.dial-scale span:nth-child(5){transform:rotate(236deg) translateY(-54px) rotate(-236deg)}
+.dial-scale span:nth-child(6){transform:rotate(295deg) translateY(-54px) rotate(-295deg)}
+.dial-scale span:nth-child(7){transform:rotate(354deg) translateY(-54px) rotate(-354deg)}
+.index-marker { position:absolute; z-index:8; left:50%; top:-7px; width:0; height:0; border-left:7px solid transparent; border-right:7px solid transparent; border-top:13px solid #efc675; transform:translateX(-50%); filter:drop-shadow(0 0 4px #d5a657); pointer-events:none; }
 .dial { inset:15px; border:1px solid #a39a91; background:repeating-conic-gradient(from -1deg,#b5aaa0 0 1.2deg,#3d3837 1.4deg 3.2deg,#171516 3.4deg 12deg); box-shadow:inset 0 0 0 10px #272324,inset 0 0 0 12px #80766f,inset 0 0 0 17px #171516,inset 0 0 24px #000,0 3px 4px #000; }
 .dial-center { inset:37px; border:1px solid #aa9c8e; color:#d6b878; font-size:1.15rem; background:radial-gradient(circle at 34% 27%,#706862 0%,#3b3634 26%,#151314 67%,#050405 100%); box-shadow:inset 0 0 0 4px #262223,inset 0 0 0 5px #756b64,0 5px 9px #000; text-shadow:0 0 9px #d6a950; }
 .dial-center::after { content:"KARLA"; position:absolute; bottom:14px; font:500 5px Montserrat; letter-spacing:.22em; color:#827468; }
-.dial-marker { top:5px; height:15px; background:#f2c87f; }
-.turns { top:78%; }
+.dial-marker { display:none; }
+.combo-progress { position:relative; z-index:20; display:flex; align-items:center; justify-content:center; gap:9px; width:150px; height:22px; padding:7px 12px; border:1px solid rgba(202,167,108,.27); border-radius:20px; background:rgba(12,7,10,.48); box-shadow:inset 0 0 9px #080507,0 4px 10px rgba(0,0,0,.25); }
 .turn-dot { width:27px; height:5px; border:1px solid #4c4542; background:#090809; }
 .turn-dot.done { background:linear-gradient(90deg,#9b713c,#e6c688,#9b713c); }
+.turn-dot.error { background:#9a3044; box-shadow:0 0 8px #c94862; }
+.dial-feedback { position:relative; z-index:20; min-width:210px; height:48px; display:grid; grid-template-columns:1fr 48px; grid-template-rows:20px 18px; align-items:center; padding:5px 10px 5px 14px; border:1px solid rgba(205,169,107,.28); border-radius:7px; color:#baa8a8; background:linear-gradient(120deg,rgba(11,7,9,.84),rgba(48,25,33,.88)); box-shadow:inset 0 0 12px #090507,0 7px 15px rgba(0,0,0,.32); }
+.feedback-label { grid-column:1; grid-row:1; font-size:.48rem; font-weight:600; letter-spacing:.2em; color:#c4a987; }
+.dial-feedback strong { grid-column:2; grid-row:1 / 3; color:#f0cd88; font:600 1.8rem/1 "Cormorant Garamond",serif; text-shadow:0 0 8px rgba(225,174,85,.5); }
+.dial-feedback small { grid-column:1; grid-row:2; font-size:.46rem; letter-spacing:.02em; color:#88797c; }
+.dial-feedback.checking { border-color:rgba(229,190,119,.7); }
+.dial-feedback.success strong,.dial-feedback.success small { color:#dcbd7d; }
+.dial-feedback.error strong,.dial-feedback.error small { color:#e06d7c; }
 .handle { right:30px; top:43%; width:10px; height:75px; background:linear-gradient(90deg,#0c0a0b,#6a625e 48%,#171415); border:1px solid #0b090a; }
 .handle span { width:30px; height:30px; background:radial-gradient(circle at 34% 28%,#b0a69d,#4b4542 38%,#171516 70%); }
 .handle b { position:absolute; left:50%; width:17px; height:8px; border-radius:4px; background:linear-gradient(#7f7670,#211e20); transform:translateX(-50%); box-shadow:0 1px 2px #000; }
@@ -216,5 +224,5 @@ figcaption { color:#5a3b43; text-shadow:0 1px #fff; }
   .album-scene{padding-left:8px;padding-right:8px}
   .album-book{width:94vw}
 }
-@media (max-height:700px) { h1{font-size:1.75rem}.hint{margin-top:8px}.stage{height:58svh;min-height:320px}.safe{width:min(72vw,285px)}.book-pages h2{margin-bottom:12px}.album-kicker{display:none}.love-note{margin:10px 0 5px}.polaroid{padding:5px 5px 8px}figcaption{padding-top:5px}.album-book{height:94svh} }
+@media (max-height:700px) { h1{font-size:1.65rem}.hint{margin-top:6px}.stage{height:65svh;min-height:390px;gap:4px}.safe{width:min(68vw,270px)}.dial-wrap{transform:translateX(-50%) scale(.88)}.book-pages h2{margin-bottom:12px}.album-kicker{display:none}.love-note{margin:10px 0 5px}.polaroid{padding:5px 5px 8px}figcaption{padding-top:5px}.album-book{height:94svh}.drag-help{display:none} }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important} }
