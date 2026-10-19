@@ -146,6 +146,33 @@
           <span class="memory-heart">♥</span>
         </div>
       </div>
+      <section class="turntable-scene" id="turntableScene" aria-hidden="true">
+        <p class="turntable-kicker">NUESTRA BANDA SONORA</p>
+        <h2>Una canción para nosotros</h2>
+        <div class="turntable" id="turntable">
+          <div class="lid"><span>A + K</span></div>
+          <div class="turntable-body">
+            <div class="platter">
+              <div class="vinyl" id="vinyl">
+                <span class="groove g1"></span><span class="groove g2"></span><span class="groove g3"></span>
+                <div class="record-label"><strong>A + K</strong><small>AURORA</small></div>
+                <i class="record-hole"></i>
+              </div>
+            </div>
+            <div class="tonearm" id="tonearm"><span class="arm-base"></span><span class="arm-stick"></span><span class="needle"></span></div>
+            <span class="turntable-light"></span>
+            <span class="speed-label">33⅓</span>
+            <div class="player-controls">
+              <button class="play-button" id="playButton" type="button" aria-label="Reproducir canción"><span class="play-icon">▶</span><span class="pause-icon">Ⅱ</span></button>
+              <div class="track-info"><strong>Aurora</strong><small>A + K · nuestra canción</small></div>
+              <div class="time-row"><span id="currentTime">0:00</span><span id="duration">0:00</span></div>
+              <input id="seekBar" class="seek-bar" type="range" min="0" max="100" value="0" step="0.1" aria-label="Posición de la canción">
+            </div>
+          </div>
+        </div>
+        <p class="audio-status" id="audioStatus">Pulsa para escuchar</p>
+        <audio id="auroraAudio" preload="metadata" src="audio/aurora.mp3"></audio>
+      </section>
     </section>
   </main>
 

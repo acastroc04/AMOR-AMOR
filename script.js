@@ -17,6 +17,14 @@ const memoryModal = document.querySelector('#memoryModal');
 const memoryImage = document.querySelector('#memoryImage');
 const memoryMessage = document.querySelector('#memoryMessage');
 const memoryClose = document.querySelector('#memoryClose');
+const turntableScene = document.querySelector('#turntableScene');
+const turntable = document.querySelector('#turntable');
+const auroraAudio = document.querySelector('#auroraAudio');
+const playButton = document.querySelector('#playButton');
+const seekBar = document.querySelector('#seekBar');
+const currentTimeDisplay = document.querySelector('#currentTime');
+const durationDisplay = document.querySelector('#duration');
+const audioStatus = document.querySelector('#audioStatus');
 
 const combination = [20, 18, 45];
 const degreesPerNumber = 360 / 60;
@@ -33,6 +41,7 @@ let activeTrayPhoto = null;
 let dragGhost = null;
 let activeSlot = null;
 let placedPhotos = 0;
+let puzzleFinished = false;
 
 const memoryMessages = {
   1: 'Ese día contigo ♡',
@@ -324,7 +333,77 @@ function showMemory(number, source) {
 function closeMemory() {
   memoryModal.classList.remove('visible');
   memoryModal.setAttribute('aria-hidden', 'true');
+  if (placedPhotos === 4 && !puzzleFinished) setTimeout(finishAlbumPuzzle, 380);
 }
+
+function finishAlbumPuzzle() {
+  puzzleFinished = true;
+  albumScene.classList.remove('puzzle-ready');
+  albumBook.classList.add('closing');
+  setTimeout(() => {
+    albumBook.classList.add('leaving');
+    turntableScene.classList.add('visible');
+    turntableScene.setAttribute('aria-hidden', 'false');
+  }, 900);
+  setTimeout(() => { albumBook.style.visibility = 'hidden'; }, 2100);
+}
+
+function formatTime(seconds) {
+  if (!Number.isFinite(seconds) || seconds < 0) return '0:00';
+  const minutes = Math.floor(seconds / 60);
+  const remaining = Math.floor(seconds % 60).toString().padStart(2, '0');
+  return `${minutes}:${remaining}`;
+}
+
+function updatePlayerTime() {
+  currentTimeDisplay.textContent = formatTime(auroraAudio.currentTime);
+  if (Number.isFinite(auroraAudio.duration)) {
+    seekBar.max = auroraAudio.duration;
+    seekBar.value = auroraAudio.currentTime;
+  }
+}
+
+function togglePlayback() {
+  if (auroraAudio.paused) {
+    auroraAudio.play().then(() => {
+      turntable.classList.add('playing');
+      playButton.setAttribute('aria-label', 'Pausar canción');
+      audioStatus.textContent = 'Reproduciendo nuestra canción';
+    }).catch(() => {
+      audioStatus.textContent = 'Añade el archivo audio/aurora.mp3';
+    });
+  } else {
+    auroraAudio.pause();
+  }
+}
+
+playButton.addEventListener('click', togglePlayback);
+auroraAudio.addEventListener('loadedmetadata', () => {
+  seekBar.max = auroraAudio.duration;
+  durationDisplay.textContent = formatTime(auroraAudio.duration);
+  audioStatus.textContent = 'Pulsa para escuchar';
+});
+auroraAudio.addEventListener('timeupdate', updatePlayerTime);
+auroraAudio.addEventListener('pause', () => {
+  turntable.classList.remove('playing');
+  playButton.setAttribute('aria-label', 'Reproducir canción');
+  if (!auroraAudio.ended) audioStatus.textContent = 'En pausa';
+});
+auroraAudio.addEventListener('ended', () => {
+  turntable.classList.remove('playing');
+  seekBar.value = 0;
+  currentTimeDisplay.textContent = '0:00';
+  audioStatus.textContent = 'La canción ha terminado';
+});
+auroraAudio.addEventListener('error', () => {
+  audioStatus.textContent = 'Añade el archivo audio/aurora.mp3';
+});
+seekBar.addEventListener('input', () => {
+  if (Number.isFinite(auroraAudio.duration)) {
+    auroraAudio.currentTime = Number(seekBar.value);
+    currentTimeDisplay.textContent = formatTime(auroraAudio.currentTime);
+  }
+});
 
 trayPhotos.forEach((photo) => photo.addEventListener('touchstart', startPhotoDrag, { passive: false }));
 document.addEventListener('touchmove', dragPhoto, { passive: false });
