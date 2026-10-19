@@ -45,6 +45,7 @@ let dragGhost = null;
 let activeSlot = null;
 let placedPhotos = 0;
 let puzzleFinished = false;
+const loveMomentEarliestStart = 88;
 const loveMomentLatestStart = 89.99;
 const loveMomentEnd = 103;
 let loveMomentEligible = false;
@@ -374,7 +375,6 @@ function updatePlayerTime() {
 
   if (!loveMomentUnlocked && !auroraAudio.paused) {
     const currentTime = auroraAudio.currentTime;
-    if (currentTime <= loveMomentLatestStart) loveMomentEligible = true;
     if (loveMomentEligible && currentTime >= loveMomentEnd) unlockLoveMoment();
   }
 }
@@ -425,8 +425,9 @@ auroraAudio.addEventListener('error', () => {
 });
 seekBar.addEventListener('input', () => {
   if (Number.isFinite(auroraAudio.duration)) {
-    auroraAudio.currentTime = Number(seekBar.value);
-    loveMomentEligible = auroraAudio.currentTime <= loveMomentLatestStart;
+    const selectedTime = Number(seekBar.value);
+    auroraAudio.currentTime = selectedTime;
+    loveMomentEligible = selectedTime >= loveMomentEarliestStart && selectedTime <= loveMomentLatestStart;
     currentTimeDisplay.textContent = formatTime(auroraAudio.currentTime);
   }
 });
