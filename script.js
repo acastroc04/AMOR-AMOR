@@ -6,7 +6,6 @@ const albumButton = document.querySelector('#albumButton');
 const albumScene = document.querySelector('#albumScene');
 const albumBook = document.querySelector('#albumBook');
 const hearts = document.querySelector('#hearts');
-const dragHelp = document.querySelector('#dragHelp');
 const currentNumberElement = document.querySelector('#currentNumber');
 const verifyState = document.querySelector('#verifyState');
 const dialFeedback = document.querySelector('.dial-feedback');
@@ -20,44 +19,70 @@ let rotation = 0;
 let currentNumber = 0;
 let verificationTimer = null;
 let unlocked = false;
-let audioContext = null;
+let soundPlayer = null;
+let soundsUnlocked = false;
 
-function getAudioContext() {
-  if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  if (audioContext.state === 'suspended') audioContext.resume();
-  return audioContext;
+function createWavDataUrl(kind) {
+  const rate = 22050;
+  const duration = kind === 'click' ? .075 : kind === 'success' ? .62 : .5;
+  const length = Math.floor(rate * duration);
+  const buffer = new ArrayBuffer(44 + length * 2);
+  const view = new DataView(buffer);
+  const write = (offset, text) => [...text].forEach((char, index) => view.setUint8(offset + index, char.charCodeAt(0)));
+  write(0, 'RIFF'); view.setUint32(4, 36 + length * 2, true); write(8, 'WAVE');
+  write(12, 'fmt '); view.setUint32(16, 16, true); view.setUint16(20, 1, true);
+  view.setUint16(22, 1, true); view.setUint32(24, rate, true); view.setUint32(28, rate * 2, true);
+  view.setUint16(32, 2, true); view.setUint16(34, 16, true); write(36, 'data'); view.setUint32(40, length * 2, true);
+
+  let noiseSeed = 9187;
+  for (let i = 0; i < length; i += 1) {
+    const time = i / rate;
+    noiseSeed = (noiseSeed * 16807) % 2147483647;
+    const noise = (noiseSeed / 1073741823.5) - 1;
+    let sample = 0;
+    if (kind === 'click') {
+      sample = (Math.sin(2 * Math.PI * 1350 * time) * .38 + noise * .34) * Math.exp(-time * 58);
+      sample += Math.sin(2 * Math.PI * 190 * time) * .22 * Math.exp(-time * 42);
+    } else if (kind === 'success') {
+      const note = time < .18 ? 523.25 : time < .36 ? 659.25 : 783.99;
+      const localTime = time < .18 ? time : time < .36 ? time - .18 : time - .36;
+      sample = (Math.sin(2 * Math.PI * note * localTime) + .32 * Math.sin(4 * Math.PI * note * localTime)) * .3 * Math.exp(-localTime * 4.5);
+    } else {
+      const frequency = time < .23 ? 190 : 125;
+      sample = (Math.sin(2 * Math.PI * frequency * time) + .24 * Math.sin(2 * Math.PI * frequency * 2.03 * time)) * .3 * Math.exp(-time * 2.3);
+    }
+    view.setInt16(44 + i * 2, Math.max(-1, Math.min(1, sample)) * 32767, true);
+  }
+
+  const bytes = new Uint8Array(buffer);
+  let binary = '';
+  for (let i = 0; i < bytes.length; i += 1) binary += String.fromCharCode(bytes[i]);
+  return `data:audio/wav;base64,${btoa(binary)}`;
 }
 
-function tone(frequency, duration, type = 'sine', volume = 0.035, delay = 0) {
+const soundUrls = {
+  click: createWavDataUrl('click'),
+  success: createWavDataUrl('success'),
+  error: createWavDataUrl('error')
+};
+soundPlayer = new Audio(soundUrls.click);
+soundPlayer.preload = 'auto';
+soundPlayer.load();
+
+function playSound(name) {
   try {
-    const context = getAudioContext();
-    const oscillator = context.createOscillator();
-    const gain = context.createGain();
-    oscillator.type = type;
-    oscillator.frequency.setValueAtTime(frequency, context.currentTime + delay);
-    gain.gain.setValueAtTime(volume, context.currentTime + delay);
-    gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + delay + duration);
-    oscillator.connect(gain).connect(context.destination);
-    oscillator.start(context.currentTime + delay);
-    oscillator.stop(context.currentTime + delay + duration);
+    if (!soundPlayer) soundPlayer = new Audio();
+    soundPlayer.pause();
+    soundPlayer.src = soundUrls[name];
+    soundPlayer.currentTime = 0;
+    soundPlayer.volume = name === 'click' ? .55 : .8;
+    soundPlayer.play().catch(() => {});
   } catch (_) {}
 }
 
-function tickSound() {
-  tone(1250, 0.025, 'square', 0.012);
-  tone(190, 0.035, 'triangle', 0.02);
-}
-
-function successSound() {
-  tone(523, .14, 'sine', .045);
-  tone(659, .14, 'sine', .045, .13);
-  tone(784, .24, 'sine', .05, .26);
-}
-
-function errorSound() {
-  tone(185, .18, 'sawtooth', .035);
-  tone(135, .28, 'sawtooth', .03, .16);
-}
+function tickSound() { playSound('click'); }
+function successSound() { playSound('success'); }
+function errorSound() { playSound('error'); }
 
 function touchAngle(touch) {
   const box = dial.getBoundingClientRect();
@@ -91,7 +116,10 @@ function scheduleVerification() {
 function startTouch(event) {
   if (unlocked || !event.touches.length) return;
   event.preventDefault();
-  getAudioContext();
+  if (!soundsUnlocked) {
+    soundsUnlocked = true;
+    playSound('click');
+  }
   dragging = true;
   lastTouchAngle = touchAngle(event.touches[0]);
   dial.classList.add('touching');
@@ -166,7 +194,6 @@ function unlock() {
   dial.setAttribute('aria-label', 'Caja fuerte abierta');
   hint.textContent = '¡Combinación correcta!';
   setTimeout(() => safe.classList.add('open'), 350);
-  dragHelp.classList.add('hidden');
   document.querySelector('.combo-progress').style.opacity = '.45';
   dialFeedback.style.opacity = '0';
   setTimeout(() => {
