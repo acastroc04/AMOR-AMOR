@@ -133,10 +133,10 @@
       </div>
       <div class="photo-tray" id="photoTray" aria-label="Fotos para ordenar">
         <span class="tray-title">RECUERDOS</span>
-        <button class="tray-photo" type="button" data-photo="3" aria-label="Arrastrar foto 3"><img src="img/Karla-3.jpg" alt=""></button>
-        <button class="tray-photo" type="button" data-photo="1" aria-label="Arrastrar foto 1"><img src="img/Karla-1.jpg" alt=""></button>
-        <button class="tray-photo" type="button" data-photo="4" aria-label="Arrastrar foto 4"><img src="img/Karla-4.jpg" alt=""></button>
-        <button class="tray-photo" type="button" data-photo="2" aria-label="Arrastrar foto 2"><img src="img/Karla-2.jpg" alt=""></button>
+        <button class="tray-photo" type="button" data-photo="3" aria-label="Arrastrar foto 3"><img src="img/Karla-3.jpg" alt="" draggable="false"></button>
+        <button class="tray-photo" type="button" data-photo="1" aria-label="Arrastrar foto 1"><img src="img/Karla-1.jpg" alt="" draggable="false"></button>
+        <button class="tray-photo" type="button" data-photo="4" aria-label="Arrastrar foto 4"><img src="img/Karla-4.jpg" alt="" draggable="false"></button>
+        <button class="tray-photo" type="button" data-photo="2" aria-label="Arrastrar foto 2"><img src="img/Karla-2.jpg" alt="" draggable="false"></button>
       </div>
       <button class="continue-button" id="continueButton" type="button">
         <span class="continue-ornament">◆</span>
@@ -153,29 +153,33 @@
       </div>
       <section class="turntable-scene" id="turntableScene" aria-hidden="true">
         <p class="turntable-kicker">NUESTRA BANDA SONORA</p>
-        <h2>Una canción para nosotros</h2>
+        <h2>Mi amor por ti...</h2>
         <div class="turntable" id="turntable">
-          <div class="lid"><span>A + K</span></div>
+          <div class="lid"><span>♥</span><small>AURORA</small></div>
           <div class="turntable-body">
+            <span class="wood-inlay inlay-one"></span><span class="wood-inlay inlay-two"></span>
             <div class="platter">
               <div class="vinyl" id="vinyl">
                 <span class="groove g1"></span><span class="groove g2"></span><span class="groove g3"></span>
-                <div class="record-label"><strong>A + K</strong><small>AURORA</small></div>
+                <div class="record-label"><strong>PARA TI</strong><small>AURORA</small></div>
                 <i class="record-hole"></i>
               </div>
             </div>
             <div class="tonearm" id="tonearm"><span class="arm-base"></span><span class="arm-stick"></span><span class="needle"></span></div>
             <span class="turntable-light"></span>
             <span class="speed-label">33⅓</span>
-            <div class="player-controls">
-              <button class="play-button" id="playButton" type="button" aria-label="Reproducir canción"><span class="play-icon">▶</span><span class="pause-icon">Ⅱ</span></button>
-              <div class="track-info"><strong>Aurora</strong><small>A + K · nuestra canción</small></div>
-              <div class="time-row"><span id="currentTime">0:00</span><span id="duration">0:00</span></div>
-              <input id="seekBar" class="seek-bar" type="range" min="0" max="100" value="0" step="0.1" aria-label="Posición de la canción">
-            </div>
+            <div class="control-deck"><span class="metal-knob"></span><span class="toggle-switch"></span><span class="speaker-grille"></span></div>
+            <span class="foot foot-left"></span><span class="foot foot-right"></span>
           </div>
         </div>
+        <div class="player-controls">
+          <button class="play-button" id="playButton" type="button" aria-label="Reproducir canción"><span class="play-icon">▶</span><span class="pause-icon">Ⅱ</span></button>
+          <div class="track-info"><strong>Aurora</strong><small>Una canción que habla por mí</small></div>
+          <div class="time-row"><span id="currentTime">0:00</span><span id="duration">0:00</span></div>
+          <input id="seekBar" class="seek-bar" type="range" min="0" max="100" value="0" step="0.1" aria-label="Posición de la canción">
+        </div>
         <p class="audio-status" id="audioStatus">Pulsa para escuchar</p>
+        <p class="fifteen-hint"><span>15</span> segundos de amor demuestran que puedes pasar a lo siguiente</p>
         <audio id="auroraAudio" preload="metadata" src="audio/aurora.mp3"></audio>
       </section>
     </section>

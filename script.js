@@ -410,6 +410,8 @@ seekBar.addEventListener('input', () => {
 });
 
 trayPhotos.forEach((photo) => photo.addEventListener('touchstart', startPhotoDrag, { passive: false }));
+trayPhotos.forEach((photo) => photo.addEventListener('dragstart', (event) => event.preventDefault()));
+trayPhotos.forEach((photo) => photo.addEventListener('contextmenu', (event) => event.preventDefault()));
 document.addEventListener('touchmove', dragPhoto, { passive: false });
 document.addEventListener('touchend', finishPhotoDrag, { passive: true });
 document.addEventListener('touchcancel', finishPhotoDrag, { passive: true });
