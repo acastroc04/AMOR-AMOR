@@ -61,7 +61,7 @@ function unlock() {
   setTimeout(() => {
     safe.classList.add('fully-open');
     hint.textContent = 'Toca el álbum para descubrirlo';
-  }, 1650);
+  }, 1500);
 }
 
 function makeHearts() {
@@ -109,6 +109,8 @@ dial.addEventListener('keydown', (event) => {
   }
 });
 
+const freshVersion = new URL(location.href).searchParams.get('_fresh') || Date.now();
 document.querySelectorAll('.photo-frame img').forEach((image) => {
   image.addEventListener('error', () => image.classList.add('broken'));
+  image.src = `${image.dataset.src}?_fresh=${freshVersion}`;
 });

@@ -14,6 +14,7 @@ body {
   width:100%; height:100%;
   overflow: hidden;
   overscroll-behavior:none;
+  touch-action:none;
   color: var(--cream);
   background:
     radial-gradient(circle at 50% 18%, rgba(137, 68, 87, .28), transparent 32rem),
@@ -36,7 +37,7 @@ h1 em { color: #dfb4ba; font-weight: 500; }
 .safe-shell::before { content:""; position:absolute; inset:-15px -13px; z-index:-1; border-radius:27px; background:linear-gradient(135deg,#625d5c,#242124 25%,#0b090b 70%,#4a4647); }
 .safe-door { position: absolute; z-index: 3; inset: 4px; transform-origin: left center; transform-style: preserve-3d; transition: transform 1.45s cubic-bezier(.17,.8,.23,1); }
 .safe.open .safe-door { transform: rotateY(-112deg); }
-.safe.fully-open .safe-door { z-index:0; pointer-events:none; }
+.safe.fully-open .safe-door { visibility:hidden; opacity:0; pointer-events:none; transition:transform 1.45s cubic-bezier(.17,.8,.23,1),opacity .2s,visibility 0s .2s; }
 .door-face { position:absolute; inset:0; overflow:hidden; border: 2px solid #77706f; border-radius: 12px; background: linear-gradient(140deg,#4e4a4a,#252224 42%,#171517 73%,#393536); box-shadow: inset 0 0 0 5px #242123, inset 0 0 40px #050405, 3px 0 8px #000; backface-visibility:hidden; }
 .door-face::after { content:""; position:absolute; inset:0; pointer-events:none; opacity:.25; background:linear-gradient(110deg,transparent 30%,#fff 49%,transparent 52%); }
 .brand { position:absolute; top:23px; left:0; right:0; color:#9d9189; font:600 .62rem Montserrat; letter-spacing:.4em; }
@@ -53,11 +54,11 @@ h1 em { color: #dfb4ba; font-weight: 500; }
 .turn-dot.done { background:var(--gold); box-shadow:0 0 7px #bd914f; }
 .handle { position:absolute; right:25px; top:45%; width:9px; height:67px; border-radius:5px; background:#111; box-shadow:0 2px 4px #000; }
 .handle span { position:absolute; top:50%; left:50%; width:27px; height:27px; border-radius:50%; background:radial-gradient(circle at 35% 30%,#8b8580,#252223 64%); border:1px solid #928b86; transform:translate(-50%,-50%); }
-.safe-inside { position:absolute; inset:4px; overflow:hidden; display:grid; place-items:center; border-radius:12px; background:radial-gradient(circle,#5d2d3d,#160e13 68%); }
+.safe-inside { position:absolute; z-index:2; inset:4px; overflow:hidden; display:grid; place-items:center; border-radius:12px; background:radial-gradient(circle,#6e3548,#160e13 70%); transform:translateZ(0); -webkit-transform:translateZ(0); }
 .inside-glow { position:absolute; inset:0; background:radial-gradient(circle,rgba(223,164,120,.4),transparent 62%); animation:breathe 2s ease-in-out infinite alternate; }
-.album-closed { position:relative; z-index:3; width:62%; aspect-ratio:.76; border:1px solid rgba(225,184,144,.45); border-radius:4px 11px 11px 4px; color:#eaccc9; background:linear-gradient(105deg,#451a28,#70283f 15%,#4d1b2c 65%,#2e101c); box-shadow:-7px 7px 0 #c6ae8c,0 14px 25px #000,0 0 35px rgba(238,174,131,.28); transform:translateY(35px) scale(.9); opacity:0; transition:transform .8s .75s,opacity .5s .75s; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.album-closed { position:relative; z-index:3; display:block; width:66%; aspect-ratio:.76; border:1px solid rgba(225,184,144,.65); border-radius:4px 11px 11px 4px; color:#eaccc9; background:linear-gradient(105deg,#451a28,#7d2c47 15%,#561d31 65%,#2e101c); box-shadow:-7px 7px 0 #c6ae8c,0 14px 25px #000,0 0 42px rgba(238,174,131,.42); transform:translateY(35px) scale(.9) translateZ(1px); opacity:0; transition:transform .8s .75s,opacity .5s .75s; cursor:pointer; -webkit-tap-highlight-color:transparent; }
 .safe.open .album-closed { transform:translateY(0) scale(1); opacity:1; }
-.safe.fully-open .album-closed { animation:albumPulse 1.5s ease-in-out infinite; }
+.safe.fully-open .album-closed { opacity:1; visibility:visible; animation:albumPulse 1.5s ease-in-out infinite; }
 .album-band,.cover-band { position:absolute; top:0; bottom:0; left:17%; width:2px; background:#c19b63; box-shadow:6px 0 0 rgba(193,155,99,.3); }
 .album-heart,.cover-heart { display:block; color:#d8ad76; font-size:1.6rem; margin-bottom:11px; }
 .album-title { display:block; font:italic 600 1.25rem "Cormorant Garamond",serif; }
@@ -103,5 +104,14 @@ figcaption { padding-top:8px; color:#574047; font:italic 600 clamp(.78rem,3.5vw,
 @keyframes pointUp { to{transform:translateY(-4px)} }
 @keyframes floatUp { 10%{opacity:.9} 100%{opacity:0;transform:translate(var(--drift),-105vh) rotate(45deg)} }
 @media (min-width:650px) { .intro{padding-top:35px}.photos{gap:16px 24px}.polaroid{padding:10px 10px 14px}.book-pages{padding:28px 55px}.album-scene{padding:25px}.stage{height:500px} }
+@media (max-width:600px) {
+  .intro{padding-left:12px;padding-right:12px}
+  .safe{width:min(84vw,330px)}
+  .safe.fully-open .safe-door{display:none}
+  .safe.fully-open .safe-inside{z-index:8}
+  .album-closed{width:68%;min-width:170px}
+  .album-scene{padding-left:8px;padding-right:8px}
+  .album-book{width:94vw}
+}
 @media (max-height:700px) { h1{font-size:1.75rem}.hint{margin-top:8px}.stage{height:58svh;min-height:320px}.safe{width:min(72vw,285px)}.book-pages h2{margin-bottom:12px}.album-kicker{display:none}.love-note{margin:10px 0 5px}.polaroid{padding:5px 5px 8px}figcaption{padding-top:5px}.album-book{height:94svh} }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important} }
