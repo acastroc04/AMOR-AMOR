@@ -26,6 +26,8 @@ const seekBar = document.querySelector('#seekBar');
 const currentTimeDisplay = document.querySelector('#currentTime');
 const durationDisplay = document.querySelector('#duration');
 const audioStatus = document.querySelector('#audioStatus');
+const fifteenHint = document.querySelector('#fifteenHint');
+const musicContinue = document.querySelector('#musicContinue');
 
 const combination = [20, 18, 45];
 const degreesPerNumber = 360 / 60;
@@ -43,6 +45,12 @@ let dragGhost = null;
 let activeSlot = null;
 let placedPhotos = 0;
 let puzzleFinished = false;
+const loveMomentStart = 88;
+const loveMomentLatestStart = 89.99;
+const loveMomentEnd = 103;
+let loveMomentEligible = false;
+let loveMomentUnlocked = false;
+let previousAudioTime = 0;
 
 const memoryMessages = {
   1: 'Ese día contigo ♡',
@@ -365,6 +373,27 @@ function updatePlayerTime() {
     seekBar.max = auroraAudio.duration;
     seekBar.value = auroraAudio.currentTime;
   }
+
+  if (!loveMomentUnlocked && !auroraAudio.paused) {
+    const currentTime = auroraAudio.currentTime;
+    const movingNormally = currentTime >= previousAudioTime && !auroraAudio.seeking;
+
+    if (currentTime < loveMomentStart) loveMomentEligible = true;
+    if (currentTime >= loveMomentStart && currentTime <= loveMomentLatestStart && movingNormally) {
+      loveMomentEligible = true;
+    }
+    if (loveMomentEligible && movingNormally && currentTime >= loveMomentEnd) unlockLoveMoment();
+    previousAudioTime = currentTime;
+  }
+}
+
+function unlockLoveMoment() {
+  loveMomentUnlocked = true;
+  fifteenHint.classList.add('completed');
+  musicContinue.classList.add('visible');
+  musicContinue.setAttribute('aria-hidden', 'false');
+  musicContinue.disabled = false;
+  audioStatus.textContent = 'Has encontrado nuestros 15 segundos';
 }
 
 function togglePlayback() {
@@ -405,6 +434,8 @@ auroraAudio.addEventListener('error', () => {
 seekBar.addEventListener('input', () => {
   if (Number.isFinite(auroraAudio.duration)) {
     auroraAudio.currentTime = Number(seekBar.value);
+    previousAudioTime = auroraAudio.currentTime;
+    loveMomentEligible = auroraAudio.currentTime <= loveMomentLatestStart;
     currentTimeDisplay.textContent = formatTime(auroraAudio.currentTime);
   }
 });

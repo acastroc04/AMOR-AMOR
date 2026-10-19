@@ -182,7 +182,11 @@
           <input id="seekBar" class="seek-bar" type="range" min="0" max="100" value="0" step="0.1" aria-label="Posición de la canción">
         </div>
         <p class="audio-status" id="audioStatus">Pulsa para escuchar</p>
-        <p class="fifteen-hint"><span>15</span><strong>segundos de amor demuestran<br>que puedes continuar</strong></p>
+        <p class="fifteen-hint" id="fifteenHint"><span>15</span><strong>segundos de amor demuestran<br>que puedes continuar</strong></p>
+        <button class="music-continue" id="musicContinue" type="button" aria-hidden="true" disabled>
+          <small>HAS ENCONTRADO EL MOMENTO</small>
+          <strong>Continuar</strong><span>→</span>
+        </button>
         <audio id="auroraAudio" preload="metadata" src="audio/aurora.mp3"></audio>
       </section>
     </section>
