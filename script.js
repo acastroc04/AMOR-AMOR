@@ -20,13 +20,11 @@ let currentNumber = 0;
 let verificationTimer = null;
 let unlocked = false;
 let soundPlayer = null;
-let ratchetPlayer = null;
-let ratchetStopTimer = null;
 let soundsUnlocked = false;
 
 function createWavDataUrl(kind) {
   const rate = 22050;
-  const duration = kind === 'ratchet' ? .44 : kind === 'success' ? .62 : .5;
+  const duration = kind === 'success' ? .62 : .5;
   const length = Math.floor(rate * duration);
   const buffer = new ArrayBuffer(44 + length * 2);
   const view = new DataView(buffer);
@@ -42,13 +40,7 @@ function createWavDataUrl(kind) {
     noiseSeed = (noiseSeed * 16807) % 2147483647;
     const noise = (noiseSeed / 1073741823.5) - 1;
     let sample = 0;
-    if (kind === 'ratchet') {
-      const toothTime = time % .055;
-      const toothNumber = Math.floor(time / .055);
-      const metallic = Math.sin(2 * Math.PI * (920 + toothNumber % 3 * 115) * toothTime);
-      const body = Math.sin(2 * Math.PI * 175 * toothTime);
-      sample = (metallic * .34 + body * .2 + noise * .22) * Math.exp(-toothTime * 62);
-    } else if (kind === 'success') {
+    if (kind === 'success') {
       const note = time < .18 ? 523.25 : time < .36 ? 659.25 : 783.99;
       const localTime = time < .18 ? time : time < .36 ? time - .18 : time - .36;
       sample = (Math.sin(2 * Math.PI * note * localTime) + .32 * Math.sin(4 * Math.PI * note * localTime)) * .3 * Math.exp(-localTime * 4.5);
@@ -66,18 +58,12 @@ function createWavDataUrl(kind) {
 }
 
 const soundUrls = {
-  ratchet: createWavDataUrl('ratchet'),
   success: createWavDataUrl('success'),
   error: createWavDataUrl('error')
 };
 soundPlayer = new Audio(soundUrls.success);
 soundPlayer.preload = 'auto';
 soundPlayer.load();
-ratchetPlayer = new Audio(soundUrls.ratchet);
-ratchetPlayer.preload = 'auto';
-ratchetPlayer.loop = true;
-ratchetPlayer.volume = .58;
-ratchetPlayer.load();
 
 function playSound(name) {
   try {
@@ -92,21 +78,6 @@ function playSound(name) {
 
 function successSound() { playSound('success'); }
 function errorSound() { playSound('error'); }
-
-function startRatchet() {
-  clearTimeout(ratchetStopTimer);
-  if (ratchetPlayer.paused) {
-    ratchetPlayer.currentTime = 0;
-    ratchetPlayer.play().catch(() => {});
-  }
-  ratchetStopTimer = setTimeout(stopRatchet, 110);
-}
-
-function stopRatchet() {
-  clearTimeout(ratchetStopTimer);
-  ratchetPlayer.pause();
-  ratchetPlayer.currentTime = 0;
-}
 
 function touchAngle(touch) {
   const box = dial.getBoundingClientRect();
@@ -126,7 +97,6 @@ function updateDial(delta) {
     currentNumber = nextNumber;
     currentNumberElement.textContent = currentNumber;
   }
-  if (Math.abs(delta) > .15) startRatchet();
   scheduleVerification();
 }
 
@@ -171,7 +141,6 @@ function finishTouch() {
   if (!dragging || unlocked) return;
   dragging = false;
   dial.classList.remove('touching');
-  stopRatchet();
   scheduleVerification();
 }
 
@@ -222,7 +191,6 @@ function verifyNumber() {
 function unlock() {
   unlocked = true;
   clearTimeout(verificationTimer);
-  stopRatchet();
   dial.setAttribute('aria-label', 'Caja fuerte abierta');
   hint.textContent = '¡Combinación correcta!';
   setTimeout(() => safe.classList.add('open'), 350);
