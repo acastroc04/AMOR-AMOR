@@ -17,6 +17,7 @@ const memoryModal = document.querySelector('#memoryModal');
 const memoryImage = document.querySelector('#memoryImage');
 const memoryMessage = document.querySelector('#memoryMessage');
 const memoryClose = document.querySelector('#memoryClose');
+const continueButton = document.querySelector('#continueButton');
 const turntableScene = document.querySelector('#turntableScene');
 const turntable = document.querySelector('#turntable');
 const auroraAudio = document.querySelector('#auroraAudio');
@@ -333,12 +334,15 @@ function showMemory(number, source) {
 function closeMemory() {
   memoryModal.classList.remove('visible');
   memoryModal.setAttribute('aria-hidden', 'true');
-  if (placedPhotos === 4 && !puzzleFinished) setTimeout(finishAlbumPuzzle, 380);
+  if (placedPhotos === 4 && !puzzleFinished) {
+    setTimeout(() => albumScene.classList.add('puzzle-complete'), 320);
+  }
 }
 
 function finishAlbumPuzzle() {
   puzzleFinished = true;
   albumScene.classList.remove('puzzle-ready');
+  albumScene.classList.remove('puzzle-complete');
   albumBook.classList.add('closing');
   setTimeout(() => {
     albumBook.classList.add('leaving');
@@ -410,6 +414,9 @@ document.addEventListener('touchmove', dragPhoto, { passive: false });
 document.addEventListener('touchend', finishPhotoDrag, { passive: true });
 document.addEventListener('touchcancel', finishPhotoDrag, { passive: true });
 memoryClose.addEventListener('click', closeMemory);
+continueButton.addEventListener('click', () => {
+  if (placedPhotos === 4 && !puzzleFinished) finishAlbumPuzzle();
+});
 
 dial.addEventListener('touchstart', startTouch, { passive: false });
 dial.addEventListener('touchmove', moveTouch, { passive: false });
