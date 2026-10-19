@@ -1,0 +1,96 @@
+:root {
+  --wine: #5b1f32;
+  --wine-dark: #28151d;
+  --blush: #d5a0a8;
+  --cream: #f4eadb;
+  --gold: #caa76c;
+  --ink: #39262c;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: var(--cream);
+  background:
+    radial-gradient(circle at 50% 18%, rgba(137, 68, 87, .28), transparent 32rem),
+    linear-gradient(145deg, #1d1116, #3b202a 62%, #201116);
+  font-family: Montserrat, sans-serif;
+}
+body::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .18;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+}
+button { font: inherit; }
+.intro { min-height: 100svh; padding: max(32px, env(safe-area-inset-top)) 20px max(30px, env(safe-area-inset-bottom)); text-align: center; transition: opacity .6s, transform .6s; }
+.eyebrow { margin: 0 0 12px; color: var(--gold); font-size: .62rem; font-weight: 600; letter-spacing: .28em; }
+h1 { margin: 0; font: 600 clamp(2rem, 8vw, 4rem)/.93 "Cormorant Garamond", serif; letter-spacing: -.025em; }
+h1 em { color: #dfb4ba; font-weight: 500; }
+.hint { min-height: 20px; margin: 14px 0 0; color: #bba9ad; font-size: .7rem; letter-spacing: .04em; }
+.stage { display: grid; place-items: center; height: min(60vh, 510px); min-height: 370px; perspective: 1200px; }
+.safe { position: relative; width: min(82vw, 330px); aspect-ratio: .88; filter: drop-shadow(0 28px 28px rgba(0,0,0,.45)); }
+.safe-shell { position: absolute; inset: 0; border: 9px solid #161317; border-radius: 22px; background: #130f12; box-shadow: inset 0 0 0 3px #6b6261, inset 0 0 24px #000, 0 0 0 2px #070607; transform-style: preserve-3d; }
+.safe-shell::before { content:""; position:absolute; inset:-15px -13px; z-index:-1; border-radius:27px; background:linear-gradient(135deg,#625d5c,#242124 25%,#0b090b 70%,#4a4647); }
+.safe-door { position: absolute; z-index: 3; inset: 4px; transform-origin: left center; transform-style: preserve-3d; transition: transform 1.45s cubic-bezier(.17,.8,.23,1); }
+.safe.open .safe-door { transform: rotateY(-112deg); }
+.door-face { position:absolute; inset:0; overflow:hidden; border: 2px solid #77706f; border-radius: 12px; background: linear-gradient(140deg,#4e4a4a,#252224 42%,#171517 73%,#393536); box-shadow: inset 0 0 0 5px #242123, inset 0 0 40px #050405, 3px 0 8px #000; backface-visibility:hidden; }
+.door-face::after { content:""; position:absolute; inset:0; pointer-events:none; opacity:.25; background:linear-gradient(110deg,transparent 30%,#fff 49%,transparent 52%); }
+.brand { position:absolute; top:23px; left:0; right:0; color:#9d9189; font:600 .62rem Montserrat; letter-spacing:.4em; }
+.dial-wrap { position:absolute; width:170px; height:170px; top:28%; left:50%; transform:translateX(-50%); }
+.dial-shadow { position:absolute; inset:2px; border-radius:50%; background:#070607; box-shadow:0 13px 18px #000; }
+.dial { position:absolute; inset:7px; border:2px solid #8a827d; border-radius:50%; padding:0; cursor:grab; touch-action:none; color:var(--cream); background: repeating-conic-gradient(from 0deg,#6d6865 0deg 2deg,#282526 2deg 15deg); box-shadow:inset 0 0 0 13px #252223,inset 0 0 0 15px #78716c,inset 0 0 30px #050505; transform:rotate(var(--rotation, 0deg)); }
+.dial:active { cursor:grabbing; }
+.dial-marker { position:absolute; top:7px; left:50%; width:3px; height:18px; border-radius:3px; background:#e2bf7e; box-shadow:0 0 8px #e4b75e; transform:translateX(-50%); }
+.dial-center { position:absolute; inset:40px; display:grid; place-items:center; border:2px solid #77706d; border-radius:50%; color:#c9a36d; font-size:1.3rem; background:radial-gradient(circle at 35% 30%,#514c49,#171516 65%); box-shadow:0 4px 8px #000; }
+.notch { position:absolute; left:50%; top:50%; width:2px; height:100%; background:linear-gradient(#aaa 0 5px,transparent 5px 95%,#aaa 95%); transform-origin:center; opacity:.7; }
+.n1{transform:translate(-50%,-50%) rotate(0)}.n2{transform:translate(-50%,-50%) rotate(22.5deg)}.n3{transform:translate(-50%,-50%) rotate(45deg)}.n4{transform:translate(-50%,-50%) rotate(67.5deg)}.n5{transform:translate(-50%,-50%) rotate(90deg)}.n6{transform:translate(-50%,-50%) rotate(112.5deg)}.n7{transform:translate(-50%,-50%) rotate(135deg)}.n8{transform:translate(-50%,-50%) rotate(157.5deg)}
+.turns { position:absolute; left:0; right:0; top:76%; display:flex; justify-content:center; gap:8px; }
+.turn-dot { width:24px; height:3px; border-radius:3px; background:#111; box-shadow:inset 0 0 2px #000; transition:.25s; }
+.turn-dot.done { background:var(--gold); box-shadow:0 0 7px #bd914f; }
+.handle { position:absolute; right:25px; top:45%; width:9px; height:67px; border-radius:5px; background:#111; box-shadow:0 2px 4px #000; }
+.handle span { position:absolute; top:50%; left:50%; width:27px; height:27px; border-radius:50%; background:radial-gradient(circle at 35% 30%,#8b8580,#252223 64%); border:1px solid #928b86; transform:translate(-50%,-50%); }
+.safe-inside { position:absolute; inset:4px; overflow:hidden; display:grid; place-items:center; border-radius:12px; background:radial-gradient(circle,#5d2d3d,#160e13 68%); }
+.inside-glow { position:absolute; inset:0; background:radial-gradient(circle,rgba(223,164,120,.4),transparent 62%); animation:breathe 2s ease-in-out infinite alternate; }
+.album-closed { position:relative; width:58%; aspect-ratio:.76; border:0; border-radius:4px 11px 11px 4px; color:#eaccc9; background:linear-gradient(105deg,#451a28,#70283f 15%,#4d1b2c 65%,#2e101c); box-shadow:-7px 7px 0 #c6ae8c,0 14px 25px #000; transform:translateY(35px) scale(.9); opacity:0; transition:transform .8s .75s,opacity .5s .75s; cursor:pointer; }
+.safe.open .album-closed { transform:translateY(0) scale(1); opacity:1; }
+.album-band,.cover-band { position:absolute; top:0; bottom:0; left:17%; width:2px; background:#c19b63; box-shadow:6px 0 0 rgba(193,155,99,.3); }
+.album-heart,.cover-heart { display:block; color:#d8ad76; font-size:1.6rem; margin-bottom:11px; }
+.album-title { display:block; font:italic 600 1.25rem "Cormorant Garamond",serif; }
+.album-subtitle { display:block; margin-top:13px; color:#b88b91; font-size:.48rem; letter-spacing:.36em; }
+.drag-help { margin:-5px 0 0; color:#806d72; font-size:.6rem; letter-spacing:.08em; transition:.4s; }
+.safe.open + * .drag-help { opacity:0; }
+
+.album-scene { display:none; position:fixed; z-index:10; inset:0; overflow:auto; padding:max(28px,env(safe-area-inset-top)) 14px max(28px,env(safe-area-inset-bottom)); place-items:center; background:radial-gradient(circle at center,#6a3847,#28141c 72%); perspective:1500px; opacity:0; transition:opacity .6s; }
+.album-scene.visible { display:grid; }
+.album-scene.shown { opacity:1; }
+.album-book { position:relative; width:min(94vw,710px); min-height:min(88vh,760px); transform-style:preserve-3d; }
+.book-back { position:absolute; inset:-9px; border-radius:9px; background:#32121f; box-shadow:0 25px 55px #160a0f; }
+.book-pages { position:relative; min-height:min(86vh,740px); padding:30px 22px 35px; overflow:hidden; border-radius:5px; color:var(--ink); text-align:center; background:#eee2ce; box-shadow:inset 0 0 50px rgba(91,60,44,.15); }
+.paper-texture { position:absolute; inset:0; opacity:.23; pointer-events:none; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='p'%3E%3CfeTurbulence baseFrequency='.35' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='.15'/%3E%3C/svg%3E"); }
+.album-kicker { position:relative; margin:0; color:#9d6e68; font-size:.55rem; font-weight:600; letter-spacing:.25em; text-transform:uppercase; }
+.book-pages h2 { position:relative; margin:7px 0 20px; font:600 clamp(1.65rem,6vw,2.7rem)/.9 "Cormorant Garamond",serif; }
+.book-pages h2 em { color:#9d4a5d; }
+.photos { position:relative; display:grid; grid-template-columns:1fr 1fr; gap:14px 10px; max-width:590px; margin:auto; }
+.polaroid { margin:0; padding:7px 7px 12px; background:#faf6ee; box-shadow:0 5px 13px rgba(62,40,37,.25); transform:rotate(var(--tilt)); }
+.photo-1{--tilt:-3deg}.photo-2{--tilt:2.5deg}.photo-3{--tilt:2deg}.photo-4{--tilt:-2.8deg}
+.photo-frame { position:relative; overflow:hidden; aspect-ratio:1/1.05; background:linear-gradient(135deg,#d9beb7,#9d6e73); }
+.photo-frame img { position:absolute; z-index:2; inset:0; width:100%; height:100%; object-fit:cover; }
+.photo-frame img:not([src]),.photo-frame img.broken { display:none; }
+.placeholder { position:absolute; inset:0; display:grid; place-items:center; color:rgba(255,255,255,.72); font:italic 2.5rem "Cormorant Garamond",serif; }
+figcaption { padding-top:8px; color:#574047; font:italic 600 clamp(.78rem,3.5vw,1rem) "Cormorant Garamond",serif; }
+.love-note { position:relative; margin:24px 0 12px; font:italic 500 1.03rem/1.35 "Cormorant Garamond",serif; }
+.signature { position:relative; color:#8c6168; font-size:.56rem; letter-spacing:.12em; text-transform:uppercase; }
+.signature span { color:#9b304b; }
+.book-cover { position:absolute; z-index:5; inset:-5px; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:5px 12px 12px 5px; color:#e8cac8; background:linear-gradient(120deg,#35101e,#70273f 22%,#4a172a 67%,#2c0d19); box-shadow:10px 10px 30px #1d0b12,inset 0 0 50px rgba(0,0,0,.4); transform-origin:left center; transition:transform 1.5s cubic-bezier(.2,.75,.2,1); backface-visibility:hidden; }
+.album-book.open .book-cover { transform:rotateY(-160deg); }
+.cover-heart { font-size:2.4rem; }
+.book-cover strong { font:italic 600 clamp(2rem,8vw,3.2rem) "Cormorant Garamond",serif; }
+.book-cover small { margin-top:17px; color:#c19b9e; letter-spacing:.45em; }
+.hearts { position:fixed; z-index:30; inset:0; pointer-events:none; overflow:hidden; }
+.floating-heart { position:absolute; bottom:-30px; color:#d88999; animation:floatUp var(--time) ease-out forwards; opacity:0; }
+@keyframes breathe { to{opacity:.45} }
+@keyframes floatUp { 10%{opacity:.9} 100%{opacity:0;transform:translate(var(--drift),-105vh) rotate(45deg)} }
+@media (min-width:650px) { .intro{padding-top:45px}.photos{gap:22px 28px}.polaroid{padding:11px 11px 17px}.book-pages{padding:37px 55px}.album-scene{padding:35px}.stage{height:520px} }
+@media (prefers-reduced-motion:reduce) { *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important} }
