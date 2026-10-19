@@ -367,6 +367,7 @@ figcaption { color:#5a3b43; text-shadow:0 1px #fff; }
 .final-letter h3 { margin:0 0 10px; color:#762f43; font:italic 600 1.45rem "Cormorant Garamond",serif; }
 .final-letter p { margin:0 0 10px; font:500 .86rem/1.32 "Cormorant Garamond",serif; }
 .final-letter p em { color:#8a2d48; font-weight:600; }.final-letter>strong{display:block;margin:13px 0;color:#8a2d48;text-align:center;font:italic 600 1.1rem "Cormorant Garamond",serif}.final-letter footer{text-align:right;font:italic 600 .83rem "Cormorant Garamond",serif}.final-letter footer span{display:block;color:#8a2d48;font-size:1.05rem}
+.letter-ps { position:absolute; left:20px; bottom:14px; color:#8d6a61; font:italic 600 .53rem "Cormorant Garamond",serif; letter-spacing:.02em; }
 .swipe-hint { min-height:29px; margin:28px 0 0; color:#d3b7ae; font:italic 600 .9rem "Cormorant Garamond",serif; transition:.35s; }.swipe-hint span{display:inline-grid;place-items:center;width:25px;height:25px;margin-right:5px;border:1px solid rgba(222,179,111,.55);border-radius:50%;color:#e4bf7d;font:600 .75rem Montserrat,sans-serif;animation:swipeUp 1s ease-in-out infinite alternate}.swipe-hint.try-again{color:#e6a6a9;transform:scale(1.04)}
 .letter-scene.open .envelope-flap { z-index:1; transform:rotateX(180deg); }
 .letter-scene.open .final-wax-seal { opacity:0; transform:translate(-50%,-90%) rotate(25deg) scale(.35); }
