@@ -14,7 +14,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Montserrat:wght@400;500;600&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261019-4">
+  <link rel="stylesheet" href="style.css?v=20261019-5">
 </head>
 
 <body>
@@ -160,8 +160,7 @@
             <div class="platter">
               <div class="vinyl" id="vinyl">
                 <span class="groove g1"></span><span class="groove g2"></span><span class="groove g3"></span>
-                <div class="record-label"><strong>PARA TI</strong><small>AURORA</small></div>
-                <i class="record-hole"></i>
+                <div class="record-label"><img src="img/Portada.jpg" alt="Portada de Aurora"><i class="record-heart" aria-hidden="true"></i></div>
               </div>
             </div>
             <div class="tonearm" id="tonearm">
@@ -176,7 +175,7 @@
           </div>
         </div>
         <div class="player-controls">
-          <button class="play-button" id="playButton" type="button" aria-label="Reproducir canción"><span class="play-icon">▶</span><span class="pause-icon">Ⅱ</span></button>
+          <button class="play-button" id="playButton" type="button" aria-label="Reproducir canción"><span class="play-icon" aria-hidden="true"></span><span class="pause-icon">Ⅱ</span></button>
           <div class="track-info"><strong>Aurora</strong><small>Una canción que habla por mí</small></div>
           <div class="time-row"><span id="currentTime">0:00</span><span id="duration">0:00</span></div>
           <input id="seekBar" class="seek-bar" type="range" min="0" max="100" value="0" step="0.1" aria-label="Posición de la canción">
@@ -197,6 +196,7 @@
         </div>
         <p class="torn-instruction" id="tornInstruction">Arrastra cada pieza hasta su lugar</p>
         <div class="piece-bank" id="pieceBank" aria-label="Piezas de la fotografía"></div>
+        <button class="puzzle-reset" id="puzzleReset" type="button"><span>↺</span> Restablecer piezas</button>
         <button class="puzzle-next" id="puzzleNext" type="button" aria-hidden="true" disabled>
           <small>EL RECUERDO ESTÁ COMPLETO</small><strong>Continuar</strong><span>→</span>
         </button>
@@ -205,7 +205,7 @@
   </main>
 
   <div class="hearts" id="hearts" aria-hidden="true"></div>
-  <script src="script.js?v=20261019-4"></script>
+  <script src="script.js?v=20261019-5"></script>
 </body>
 
 </html>

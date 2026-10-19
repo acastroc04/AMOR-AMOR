@@ -33,6 +33,7 @@ const tornBoard = document.querySelector('#tornBoard');
 const pieceBank = document.querySelector('#pieceBank');
 const tornInstruction = document.querySelector('#tornInstruction');
 const puzzleNext = document.querySelector('#puzzleNext');
+const puzzleReset = document.querySelector('#puzzleReset');
 
 const combination = [20, 18, 45];
 const degreesPerNumber = 360 / 60;
@@ -485,10 +486,10 @@ function finishPuzzlePieceDrag(event) {
 
 function tryPlacePuzzlePiece(piece, slot) {
   if (!piece || !slot || piece.classList.contains('placed')) return;
-  if (piece.dataset.piece !== slot.dataset.piece) {
-    slot.classList.add('wrong');
-    setTimeout(() => slot.classList.remove('wrong'), 420);
-    tornInstruction.textContent = 'Ese pedacito no encaja ahí';
+  if (slot.classList.contains('filled')) {
+    slot.classList.add('occupied');
+    setTimeout(() => slot.classList.remove('occupied'), 360);
+    tornInstruction.textContent = 'Ese hueco ya tiene una pieza';
     return;
   }
   piece.classList.remove('selected', 'dragging');
@@ -497,12 +498,36 @@ function tryPlacePuzzlePiece(piece, slot) {
   slot.appendChild(piece);
   selectedPuzzlePiece = null;
   completedPuzzlePieces += 1;
-  tornInstruction.textContent = completedPuzzlePieces === 12 ? 'Nuestro recuerdo vuelve a estar completo' : `${completedPuzzlePieces} de 12 pedacitos unidos`;
+  tornInstruction.textContent = `${completedPuzzlePieces} de 12 pedacitos colocados`;
   if (completedPuzzlePieces === 12) {
-    tornPuzzleScene.classList.add('complete');
-    puzzleNext.disabled = false;
-    puzzleNext.setAttribute('aria-hidden', 'false');
+    const correctlyAssembled = [...tornBoard.querySelectorAll('.torn-slot')]
+      .every((target) => target.firstElementChild?.dataset.piece === target.dataset.piece);
+    if (correctlyAssembled) {
+      tornInstruction.textContent = 'Nuestro recuerdo vuelve a estar completo';
+      tornPuzzleScene.classList.add('complete');
+      puzzleNext.disabled = false;
+      puzzleNext.setAttribute('aria-hidden', 'false');
+    } else {
+      tornPuzzleScene.classList.add('needs-reset');
+      tornInstruction.textContent = 'Hay pedacitos fuera de lugar… inténtalo otra vez';
+    }
   }
+}
+
+function resetTornPuzzle() {
+  const pieces = [...tornBoard.querySelectorAll('.torn-piece'), ...pieceBank.querySelectorAll('.torn-piece')];
+  const resetOrder = pieces.sort(() => Math.random() - .5);
+  resetOrder.forEach((piece) => {
+    piece.classList.remove('placed', 'selected', 'dragging');
+    pieceBank.appendChild(piece);
+  });
+  tornBoard.querySelectorAll('.torn-slot').forEach((slot) => slot.classList.remove('filled', 'occupied'));
+  tornPuzzleScene.classList.remove('complete', 'needs-reset');
+  selectedPuzzlePiece = null;
+  completedPuzzlePieces = 0;
+  puzzleNext.disabled = true;
+  puzzleNext.setAttribute('aria-hidden', 'true');
+  tornInstruction.textContent = 'Arrastra cada pieza hasta su lugar';
 }
 
 function togglePlayback() {
@@ -573,6 +598,7 @@ musicContinue.addEventListener('click', () => {
 document.addEventListener('touchmove', movePuzzlePiece, { passive: false });
 document.addEventListener('touchend', finishPuzzlePieceDrag, { passive: true });
 document.addEventListener('touchcancel', finishPuzzlePieceDrag, { passive: true });
+puzzleReset.addEventListener('click', resetTornPuzzle);
 
 dial.addEventListener('touchstart', startTouch, { passive: false });
 dial.addEventListener('touchmove', moveTouch, { passive: false });

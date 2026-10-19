@@ -259,9 +259,11 @@ figcaption { color:#5a3b43; text-shadow:0 1px #fff; }
 .vinyl::after { content:""; position:absolute; inset:0; border-radius:50%; background:conic-gradient(from 30deg,transparent,rgba(255,255,255,.09),transparent 20%,transparent 55%,rgba(255,255,255,.06),transparent 75%); }
 .turntable.playing .vinyl { animation:recordSpin 2.2s linear infinite; }
 .groove { position:absolute; border:1px solid rgba(198,185,170,.13); border-radius:50%; }.g1{inset:10%}.g2{inset:20%}.g3{inset:31%}
-.record-label { position:absolute; z-index:2; inset:35%; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:50%; color:#f1d7b4; background:radial-gradient(circle,#9f3a52,#6d2036); box-shadow:0 0 0 2px #c49461; }
-.record-label strong { font:italic 600 .72rem "Cormorant Garamond",serif; }.record-label small{font-size:.28rem;letter-spacing:.15em}
-.record-hole { position:absolute; z-index:3; left:50%; top:50%; width:5px; height:5px; border-radius:50%; background:#e7d2ae; transform:translate(-50%,-50%); }
+.record-label { position:absolute; z-index:2; inset:32%; overflow:hidden; border:2px solid #b38a4d; border-radius:50%; background:#2b1816; box-shadow:0 0 0 2px #30231d,0 0 8px rgba(0,0,0,.8); }
+.record-label img { width:100%; height:100%; display:block; object-fit:cover; }
+.record-label::after { content:""; position:absolute; inset:0; border-radius:50%; background:radial-gradient(circle at 35% 27%,rgba(255,241,200,.22),transparent 35%); }
+.record-heart { position:absolute; z-index:4; left:50%; top:50%; width:9px; height:9px; background:linear-gradient(135deg,#f5dc91,#a87325); transform:translate(-50%,-43%) rotate(45deg); box-shadow:0 1px 3px #301907,0 0 0 1px rgba(91,54,10,.5); }
+.record-heart::before,.record-heart::after { content:""; position:absolute; width:9px; height:9px; border-radius:50%; background:inherit; }.record-heart::before{left:-5px}.record-heart::after{top:-5px}
 .tonearm { position:absolute; z-index:6; right:5%; top:7%; width:34%; height:64%; transform-origin:79% 15%; transition:transform .75s cubic-bezier(.2,.75,.2,1); filter:drop-shadow(2px 4px 3px rgba(0,0,0,.55)); }
 .turntable.playing .tonearm { transform:rotate(12deg); }
 .tonearm svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
@@ -284,7 +286,7 @@ figcaption { color:#5a3b43; text-shadow:0 1px #fff; }
 .play-button { position:relative; grid-row:1/4; width:46px; height:46px; align-self:center; display:grid; place-items:center; padding:0; border:1px solid #d8b473; border-radius:50%; color:#f4ddba; background:radial-gradient(circle at 38% 30%,#9d4760,#6b203b 48%,#2b0b19 76%); box-shadow:0 5px 10px rgba(0,0,0,.52),inset 0 0 0 3px #411225,inset 0 0 0 4px rgba(231,193,126,.35); font:600 .86rem/1 Montserrat,sans-serif; text-shadow:0 1px 2px #230812; }
 .play-button::before { content:""; position:absolute; inset:-5px; border:1px solid rgba(207,166,99,.28); border-radius:50%; }
 .play-button:active { transform:translateY(2px) scale(.96); box-shadow:0 2px 5px rgba(0,0,0,.5),inset 0 0 0 3px #411225; }
-.play-icon { margin-left:2px; }.pause-icon { letter-spacing:-2px; margin-left:-2px; }
+.play-icon { width:0; height:0; display:inline-block; margin-left:4px; border-top:8px solid transparent; border-bottom:8px solid transparent; border-left:12px solid #f3d9ae; filter:drop-shadow(0 1px 1px #2a0915); }.pause-icon { letter-spacing:-2px; margin-left:-2px; }
 .pause-icon{display:none}.turntable.playing + .player-controls .play-icon{display:none}.turntable.playing + .player-controls .pause-icon{display:inline}
 .track-info { display:flex; flex-direction:column; justify-content:center; min-width:0; }.track-info strong{font:600 .74rem Montserrat,sans-serif;color:#f0d9c1}.track-info small{overflow:hidden;color:#c2a08c;font-size:.46rem;white-space:nowrap;text-overflow:ellipsis}
 .time-row { display:flex; justify-content:space-between; color:#d6b58e; font:500 .43rem Montserrat,sans-serif; }
@@ -314,7 +316,7 @@ figcaption { color:#5a3b43; text-shadow:0 1px #fff; }
 .torn-slot::after { content:""; position:absolute; inset:42%; border-radius:50%; background:rgba(231,194,137,.16); }
 .torn-slot.filled { border-color:transparent; background:none; }
 .torn-slot.filled::after { display:none; }
-.torn-slot.wrong { animation:tornWrong .4s ease; background:rgba(126,31,50,.52); }
+.torn-slot.occupied { animation:tornWrong .35s ease; box-shadow:inset 0 0 0 2px rgba(197,77,91,.7); }
 .torn-instruction { min-height:17px; margin:7px 0 5px; color:#d8bda9; font:italic 600 .86rem "Cormorant Garamond",serif; }
 .piece-bank { width:min(91vw,390px); min-height:101px; display:grid; grid-template-columns:repeat(6,1fr); gap:4px; padding:7px; border:1px solid rgba(205,160,96,.42); border-radius:9px; background:linear-gradient(145deg,rgba(48,19,21,.95),rgba(84,39,31,.94)); box-shadow:inset 0 0 0 3px rgba(37,13,18,.85),0 9px 18px rgba(9,2,4,.38); }
 .torn-piece { width:100%; aspect-ratio:8/9; padding:0; border:0; background-image:url('img/FotoRota.jpg'); background-size:300% 400%; background-position:var(--piece-x) var(--piece-y); clip-path:var(--piece-shape); filter:drop-shadow(1px 2px 1px rgba(0,0,0,.7)); touch-action:none; -webkit-touch-callout:none; -webkit-user-select:none; transition:transform .18s,filter .18s,opacity .18s; }
@@ -323,10 +325,16 @@ figcaption { color:#5a3b43; text-shadow:0 1px #fff; }
 .torn-slot .torn-piece { position:absolute; inset:0; width:100%; height:100%; aspect-ratio:auto; transform:none; filter:none; pointer-events:none; }
 .piece-ghost { position:fixed; z-index:90; margin:0; transform:translate(-50%,-55%) scale(1.06); pointer-events:none; filter:drop-shadow(0 8px 7px rgba(0,0,0,.72)); }
 .torn-puzzle-scene.complete .piece-bank { opacity:0; min-height:0; height:0; margin:0; padding:0; border:0; overflow:hidden; transition:opacity .35s,height .5s,min-height .5s,padding .5s; }
+.puzzle-reset { margin:6px 0 0; padding:5px 13px; border:1px solid rgba(208,169,105,.48); border-radius:20px; color:#d9bda8; background:rgba(51,18,27,.72); font:600 .55rem Montserrat,sans-serif; letter-spacing:.06em; box-shadow:inset 0 0 0 2px rgba(104,48,42,.45); }
+.puzzle-reset span { margin-right:4px; color:#e3bd78; font-size:.85rem; }
+.puzzle-reset:active { transform:scale(.96); }
+.torn-puzzle-scene.complete .puzzle-reset { display:none; }
+.torn-puzzle-scene.needs-reset .puzzle-reset { border-color:#d29a69; box-shadow:0 0 13px rgba(213,126,86,.24),inset 0 0 0 2px rgba(104,48,42,.45); animation:resetPulse 1.1s ease-in-out infinite alternate; }
 .puzzle-next { width:min(84vw,330px); min-height:58px; margin:9px 0 0; display:grid; grid-template-columns:1fr auto; grid-template-rows:auto auto; align-items:center; padding:8px 17px; border:1px solid #d3ad6d; border-radius:9px; color:#f0d6bb; background:linear-gradient(115deg,#32101e,#762943 48%,#3b1123); box-shadow:0 12px 25px rgba(11,3,7,.58),inset 0 0 0 3px #3a1022,inset 0 0 0 4px rgba(219,177,104,.4); opacity:0; visibility:hidden; transform:translateY(14px) scale(.95); transition:.45s; }
 .torn-puzzle-scene.complete .puzzle-next { opacity:1; visibility:visible; transform:translateY(0) scale(1); }
 .puzzle-next small { grid-column:1; color:#bd9984; font:600 .38rem Montserrat,sans-serif; letter-spacing:.16em; }.puzzle-next strong{grid-column:1;font:italic 600 1.25rem "Cormorant Garamond",serif}.puzzle-next span{grid-column:2;grid-row:1/3;color:#e5bd78;font-size:1.25rem}
 @keyframes tornWrong { 25%,75%{transform:translateX(-4px)}50%{transform:translateX(4px)} }
+@keyframes resetPulse { to{transform:scale(1.04)} }
 @keyframes recordSpin { to{transform:rotate(360deg)} }
 .hearts { position:fixed; z-index:30; inset:0; pointer-events:none; overflow:hidden; }
 .floating-heart { position:absolute; bottom:-30px; color:#d88999; animation:floatUp var(--time) ease-out forwards; opacity:0; }
