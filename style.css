@@ -126,14 +126,11 @@ figcaption { padding-top:8px; color:#574047; font:italic 600 clamp(.78rem,3.5vw,
 .dial-scale { position:absolute; z-index:4; inset:0; pointer-events:none; border-radius:50%; color:#ead6b2; font:600 7px Montserrat,sans-serif; }
 .dial-scale span { position:absolute; left:50%; top:50%; width:18px; margin-left:-9px; text-align:center; transform-origin:9px 0; text-shadow:0 1px 3px #000; }
 .dial-scale span:nth-child(1){transform:rotate(0deg) translateY(-54px) rotate(0deg)}
-.dial-scale span:nth-child(2){transform:rotate(59deg) translateY(-54px) rotate(-59deg)}
-.dial-scale span:nth-child(3){transform:rotate(118deg) translateY(-54px) rotate(-118deg)}
-.dial-scale span:nth-child(4){transform:rotate(177deg) translateY(-54px) rotate(-177deg)}
-.dial-scale span:nth-child(5){transform:rotate(236deg) translateY(-54px) rotate(-236deg)}
-.dial-scale span:nth-child(6){transform:rotate(295deg) translateY(-54px) rotate(-295deg)}
-.dial-scale span:nth-child(7){transform:rotate(354deg) translateY(-54px) rotate(-354deg)}
+.dial-scale span:nth-child(2){transform:rotate(90deg) translateY(-54px) rotate(-90deg)}
+.dial-scale span:nth-child(3){transform:rotate(180deg) translateY(-54px) rotate(-180deg)}
+.dial-scale span:nth-child(4){transform:rotate(270deg) translateY(-54px) rotate(-270deg)}
 .index-marker { position:absolute; z-index:8; left:50%; top:-7px; width:0; height:0; border-left:7px solid transparent; border-right:7px solid transparent; border-top:13px solid #efc675; transform:translateX(-50%); filter:drop-shadow(0 0 4px #d5a657); pointer-events:none; }
-.dial { inset:15px; border:1px solid #a39a91; background:repeating-conic-gradient(from -1deg,#b5aaa0 0 1.2deg,#3d3837 1.4deg 3.2deg,#171516 3.4deg 12deg); box-shadow:inset 0 0 0 10px #272324,inset 0 0 0 12px #80766f,inset 0 0 0 17px #171516,inset 0 0 24px #000,0 3px 4px #000; }
+.dial { inset:15px; border:1px solid #a39a91; background:repeating-conic-gradient(from -.5deg,#c8bbb0 0 .9deg,#332f2f 1deg 2deg,#171516 2.1deg 6deg); box-shadow:inset 0 0 0 10px #272324,inset 0 0 0 12px #80766f,inset 0 0 0 17px #171516,inset 0 0 24px #000,0 3px 4px #000; }
 .dial-center { inset:37px; border:1px solid #aa9c8e; color:#d6b878; font-size:1.15rem; background:radial-gradient(circle at 34% 27%,#706862 0%,#3b3634 26%,#151314 67%,#050405 100%); box-shadow:inset 0 0 0 4px #262223,inset 0 0 0 5px #756b64,0 5px 9px #000; text-shadow:0 0 9px #d6a950; }
 .dial-center::after { content:"KARLA"; position:absolute; bottom:14px; font:500 5px Montserrat; letter-spacing:.22em; color:#827468; }
 .dial-marker { display:none; }

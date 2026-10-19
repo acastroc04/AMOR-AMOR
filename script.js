@@ -11,7 +11,7 @@ const verifyState = document.querySelector('#verifyState');
 const dialFeedback = document.querySelector('.dial-feedback');
 
 const combination = [20, 18, 45];
-const degreesPerNumber = 360 / 61;
+const degreesPerNumber = 360 / 60;
 let sequenceIndex = 0;
 let dragging = false;
 let lastTouchAngle = 0;
@@ -86,7 +86,7 @@ function touchAngle(touch) {
 
 function normalizedNumber() {
   const normalized = ((-rotation % 360) + 360) % 360;
-  return Math.round(normalized / degreesPerNumber) % 61;
+  return Math.round(normalized / degreesPerNumber) % 60;
 }
 
 function updateDial(delta) {
