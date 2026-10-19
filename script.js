@@ -6,6 +6,7 @@ const albumButton = document.querySelector('#albumButton');
 const albumScene = document.querySelector('#albumScene');
 const albumBook = document.querySelector('#albumBook');
 const hearts = document.querySelector('#hearts');
+const dragHelp = document.querySelector('#dragHelp');
 
 let dragging = false;
 let lastAngle = 0;
@@ -56,7 +57,11 @@ function unlock() {
   endTurn();
   dial.setAttribute('aria-label', 'Caja fuerte abierta');
   setTimeout(() => safe.classList.add('open'), 350);
-  setTimeout(() => { hint.textContent = 'Toca el álbum para descubrirlo'; }, 1450);
+  dragHelp.classList.add('hidden');
+  setTimeout(() => {
+    safe.classList.add('fully-open');
+    hint.textContent = 'Toca el álbum para descubrirlo';
+  }, 1650);
 }
 
 function makeHearts() {
@@ -75,11 +80,13 @@ function makeHearts() {
 }
 
 albumButton.addEventListener('click', () => {
+  if (!safe.classList.contains('fully-open')) return;
   albumScene.classList.add('visible');
   albumScene.setAttribute('aria-hidden', 'false');
   requestAnimationFrame(() => {
     albumScene.classList.add('shown');
-    setTimeout(() => albumBook.classList.add('open'), 450);
+    requestAnimationFrame(() => albumScene.classList.add('zoomed'));
+    setTimeout(() => albumBook.classList.add('open'), 1200);
   });
   makeHearts();
 });

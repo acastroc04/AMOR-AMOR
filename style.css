@@ -8,11 +8,12 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { width:100%; height:100%; overflow:hidden; overscroll-behavior:none; }
 body {
   margin: 0;
-  min-height: 100vh;
-  overflow-x: hidden;
+  width:100%; height:100%;
+  overflow: hidden;
+  overscroll-behavior:none;
   color: var(--cream);
   background:
     radial-gradient(circle at 50% 18%, rgba(137, 68, 87, .28), transparent 32rem),
@@ -24,17 +25,18 @@ body::before {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
 }
 button { font: inherit; }
-.intro { min-height: 100svh; padding: max(32px, env(safe-area-inset-top)) 20px max(30px, env(safe-area-inset-bottom)); text-align: center; transition: opacity .6s, transform .6s; }
+.intro { height: 100svh; overflow:hidden; padding: max(20px, env(safe-area-inset-top)) 20px max(16px, env(safe-area-inset-bottom)); text-align: center; transition: opacity .6s, transform .6s; }
 .eyebrow { margin: 0 0 12px; color: var(--gold); font-size: .62rem; font-weight: 600; letter-spacing: .28em; }
 h1 { margin: 0; font: 600 clamp(2rem, 8vw, 4rem)/.93 "Cormorant Garamond", serif; letter-spacing: -.025em; }
 h1 em { color: #dfb4ba; font-weight: 500; }
 .hint { min-height: 20px; margin: 14px 0 0; color: #bba9ad; font-size: .7rem; letter-spacing: .04em; }
-.stage { display: grid; place-items: center; height: min(60vh, 510px); min-height: 370px; perspective: 1200px; }
+.stage { display: grid; place-items: center; height: min(59svh, 500px); min-height: 350px; perspective: 1200px; }
 .safe { position: relative; width: min(82vw, 330px); aspect-ratio: .88; filter: drop-shadow(0 28px 28px rgba(0,0,0,.45)); }
 .safe-shell { position: absolute; inset: 0; border: 9px solid #161317; border-radius: 22px; background: #130f12; box-shadow: inset 0 0 0 3px #6b6261, inset 0 0 24px #000, 0 0 0 2px #070607; transform-style: preserve-3d; }
 .safe-shell::before { content:""; position:absolute; inset:-15px -13px; z-index:-1; border-radius:27px; background:linear-gradient(135deg,#625d5c,#242124 25%,#0b090b 70%,#4a4647); }
 .safe-door { position: absolute; z-index: 3; inset: 4px; transform-origin: left center; transform-style: preserve-3d; transition: transform 1.45s cubic-bezier(.17,.8,.23,1); }
 .safe.open .safe-door { transform: rotateY(-112deg); }
+.safe.fully-open .safe-door { z-index:0; pointer-events:none; }
 .door-face { position:absolute; inset:0; overflow:hidden; border: 2px solid #77706f; border-radius: 12px; background: linear-gradient(140deg,#4e4a4a,#252224 42%,#171517 73%,#393536); box-shadow: inset 0 0 0 5px #242123, inset 0 0 40px #050405, 3px 0 8px #000; backface-visibility:hidden; }
 .door-face::after { content:""; position:absolute; inset:0; pointer-events:none; opacity:.25; background:linear-gradient(110deg,transparent 30%,#fff 49%,transparent 52%); }
 .brand { position:absolute; top:23px; left:0; right:0; color:#9d9189; font:600 .62rem Montserrat; letter-spacing:.4em; }
@@ -53,34 +55,40 @@ h1 em { color: #dfb4ba; font-weight: 500; }
 .handle span { position:absolute; top:50%; left:50%; width:27px; height:27px; border-radius:50%; background:radial-gradient(circle at 35% 30%,#8b8580,#252223 64%); border:1px solid #928b86; transform:translate(-50%,-50%); }
 .safe-inside { position:absolute; inset:4px; overflow:hidden; display:grid; place-items:center; border-radius:12px; background:radial-gradient(circle,#5d2d3d,#160e13 68%); }
 .inside-glow { position:absolute; inset:0; background:radial-gradient(circle,rgba(223,164,120,.4),transparent 62%); animation:breathe 2s ease-in-out infinite alternate; }
-.album-closed { position:relative; width:58%; aspect-ratio:.76; border:0; border-radius:4px 11px 11px 4px; color:#eaccc9; background:linear-gradient(105deg,#451a28,#70283f 15%,#4d1b2c 65%,#2e101c); box-shadow:-7px 7px 0 #c6ae8c,0 14px 25px #000; transform:translateY(35px) scale(.9); opacity:0; transition:transform .8s .75s,opacity .5s .75s; cursor:pointer; }
+.album-closed { position:relative; z-index:3; width:62%; aspect-ratio:.76; border:1px solid rgba(225,184,144,.45); border-radius:4px 11px 11px 4px; color:#eaccc9; background:linear-gradient(105deg,#451a28,#70283f 15%,#4d1b2c 65%,#2e101c); box-shadow:-7px 7px 0 #c6ae8c,0 14px 25px #000,0 0 35px rgba(238,174,131,.28); transform:translateY(35px) scale(.9); opacity:0; transition:transform .8s .75s,opacity .5s .75s; cursor:pointer; -webkit-tap-highlight-color:transparent; }
 .safe.open .album-closed { transform:translateY(0) scale(1); opacity:1; }
+.safe.fully-open .album-closed { animation:albumPulse 1.5s ease-in-out infinite; }
 .album-band,.cover-band { position:absolute; top:0; bottom:0; left:17%; width:2px; background:#c19b63; box-shadow:6px 0 0 rgba(193,155,99,.3); }
 .album-heart,.cover-heart { display:block; color:#d8ad76; font-size:1.6rem; margin-bottom:11px; }
 .album-title { display:block; font:italic 600 1.25rem "Cormorant Garamond",serif; }
 .album-subtitle { display:block; margin-top:13px; color:#b88b91; font-size:.48rem; letter-spacing:.36em; }
+.open-prompt { position:absolute; z-index:4; left:0; right:0; bottom:12px; display:flex; flex-direction:column; align-items:center; gap:1px; color:#f0c997; font-size:.6rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; opacity:0; transform:translateY(8px); transition:.45s 1.65s; pointer-events:none; }
+.open-prompt i { font-style:normal; font-size:1rem; animation:pointUp .8s ease-in-out infinite alternate; }
+.safe.fully-open .open-prompt { opacity:1; transform:translateY(0); }
 .drag-help { margin:-5px 0 0; color:#806d72; font-size:.6rem; letter-spacing:.08em; transition:.4s; }
-.safe.open + * .drag-help { opacity:0; }
+.drag-help.hidden { opacity:0; }
 
-.album-scene { display:none; position:fixed; z-index:10; inset:0; overflow:auto; padding:max(28px,env(safe-area-inset-top)) 14px max(28px,env(safe-area-inset-bottom)); place-items:center; background:radial-gradient(circle at center,#6a3847,#28141c 72%); perspective:1500px; opacity:0; transition:opacity .6s; }
+.album-scene { visibility:hidden; position:fixed; z-index:10; inset:0; overflow:hidden; padding:max(18px,env(safe-area-inset-top)) 12px max(18px,env(safe-area-inset-bottom)); display:grid; place-items:center; background:radial-gradient(circle at center,#6a3847,#28141c 72%); perspective:1500px; opacity:0; transition:opacity .5s; touch-action:none; }
 .album-scene.visible { display:grid; }
+.album-scene.visible { visibility:visible; }
 .album-scene.shown { opacity:1; }
-.album-book { position:relative; width:min(94vw,710px); min-height:min(88vh,760px); transform-style:preserve-3d; }
+.album-book { position:relative; width:min(92vw,710px); height:min(91svh,760px); transform-style:preserve-3d; transform:translateY(22vh) scale(.18); opacity:.35; transition:transform 1s cubic-bezier(.18,.82,.2,1),opacity .55s; }
+.album-scene.zoomed .album-book { transform:translateY(0) scale(1); opacity:1; }
 .book-back { position:absolute; inset:-9px; border-radius:9px; background:#32121f; box-shadow:0 25px 55px #160a0f; }
-.book-pages { position:relative; min-height:min(86vh,740px); padding:30px 22px 35px; overflow:hidden; border-radius:5px; color:var(--ink); text-align:center; background:#eee2ce; box-shadow:inset 0 0 50px rgba(91,60,44,.15); }
+.book-pages { position:relative; height:100%; padding:24px 22px 25px; overflow:hidden; border-radius:5px; color:var(--ink); text-align:center; background:#eee2ce; box-shadow:inset 0 0 50px rgba(91,60,44,.15); }
 .paper-texture { position:absolute; inset:0; opacity:.23; pointer-events:none; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='p'%3E%3CfeTurbulence baseFrequency='.35' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='.15'/%3E%3C/svg%3E"); }
 .album-kicker { position:relative; margin:0; color:#9d6e68; font-size:.55rem; font-weight:600; letter-spacing:.25em; text-transform:uppercase; }
 .book-pages h2 { position:relative; margin:7px 0 20px; font:600 clamp(1.65rem,6vw,2.7rem)/.9 "Cormorant Garamond",serif; }
 .book-pages h2 em { color:#9d4a5d; }
-.photos { position:relative; display:grid; grid-template-columns:1fr 1fr; gap:14px 10px; max-width:590px; margin:auto; }
+.photos { position:relative; display:grid; grid-template-columns:1fr 1fr; gap:10px 8px; max-width:540px; margin:auto; }
 .polaroid { margin:0; padding:7px 7px 12px; background:#faf6ee; box-shadow:0 5px 13px rgba(62,40,37,.25); transform:rotate(var(--tilt)); }
 .photo-1{--tilt:-3deg}.photo-2{--tilt:2.5deg}.photo-3{--tilt:2deg}.photo-4{--tilt:-2.8deg}
-.photo-frame { position:relative; overflow:hidden; aspect-ratio:1/1.05; background:linear-gradient(135deg,#d9beb7,#9d6e73); }
+.photo-frame { position:relative; overflow:hidden; aspect-ratio:1/1; background:linear-gradient(135deg,#d9beb7,#9d6e73); }
 .photo-frame img { position:absolute; z-index:2; inset:0; width:100%; height:100%; object-fit:cover; }
 .photo-frame img:not([src]),.photo-frame img.broken { display:none; }
 .placeholder { position:absolute; inset:0; display:grid; place-items:center; color:rgba(255,255,255,.72); font:italic 2.5rem "Cormorant Garamond",serif; }
 figcaption { padding-top:8px; color:#574047; font:italic 600 clamp(.78rem,3.5vw,1rem) "Cormorant Garamond",serif; }
-.love-note { position:relative; margin:24px 0 12px; font:italic 500 1.03rem/1.35 "Cormorant Garamond",serif; }
+.love-note { position:relative; margin:16px 0 8px; font:italic 500 1rem/1.25 "Cormorant Garamond",serif; }
 .signature { position:relative; color:#8c6168; font-size:.56rem; letter-spacing:.12em; text-transform:uppercase; }
 .signature span { color:#9b304b; }
 .book-cover { position:absolute; z-index:5; inset:-5px; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:5px 12px 12px 5px; color:#e8cac8; background:linear-gradient(120deg,#35101e,#70273f 22%,#4a172a 67%,#2c0d19); box-shadow:10px 10px 30px #1d0b12,inset 0 0 50px rgba(0,0,0,.4); transform-origin:left center; transition:transform 1.5s cubic-bezier(.2,.75,.2,1); backface-visibility:hidden; }
@@ -91,6 +99,9 @@ figcaption { padding-top:8px; color:#574047; font:italic 600 clamp(.78rem,3.5vw,
 .hearts { position:fixed; z-index:30; inset:0; pointer-events:none; overflow:hidden; }
 .floating-heart { position:absolute; bottom:-30px; color:#d88999; animation:floatUp var(--time) ease-out forwards; opacity:0; }
 @keyframes breathe { to{opacity:.45} }
+@keyframes albumPulse { 50%{transform:translateY(-4px) scale(1.025);box-shadow:-7px 7px 0 #c6ae8c,0 18px 30px #000,0 0 45px rgba(238,174,131,.5)} }
+@keyframes pointUp { to{transform:translateY(-4px)} }
 @keyframes floatUp { 10%{opacity:.9} 100%{opacity:0;transform:translate(var(--drift),-105vh) rotate(45deg)} }
-@media (min-width:650px) { .intro{padding-top:45px}.photos{gap:22px 28px}.polaroid{padding:11px 11px 17px}.book-pages{padding:37px 55px}.album-scene{padding:35px}.stage{height:520px} }
+@media (min-width:650px) { .intro{padding-top:35px}.photos{gap:16px 24px}.polaroid{padding:10px 10px 14px}.book-pages{padding:28px 55px}.album-scene{padding:25px}.stage{height:500px} }
+@media (max-height:700px) { h1{font-size:1.75rem}.hint{margin-top:8px}.stage{height:58svh;min-height:320px}.safe{width:min(72vw,285px)}.book-pages h2{margin-bottom:12px}.album-kicker{display:none}.love-note{margin:10px 0 5px}.polaroid{padding:5px 5px 8px}figcaption{padding-top:5px}.album-book{height:94svh} }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important} }
