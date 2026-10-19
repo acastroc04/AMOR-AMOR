@@ -130,8 +130,8 @@ function playSound(name) {
     soundPlayer.src = soundUrls[name];
     soundPlayer.currentTime = 0;
     soundPlayer.volume = .8;
-    soundPlayer.play().catch(() => {});
-  } catch (_) {}
+    soundPlayer.play().catch(() => { });
+  } catch (_) { }
 }
 
 function successSound() { playSound('success'); }
@@ -542,7 +542,7 @@ function evaluateTornPuzzle() {
     const correctlyAssembled = [...tornBoard.querySelectorAll('.torn-slot')]
       .every((target) => target.firstElementChild?.dataset.piece === target.dataset.piece);
     if (correctlyAssembled) {
-      tornInstruction.textContent = 'Nuestro recuerdo vuelve a estar completo';
+      tornInstruction.textContent = 'Siempre serás mi prioridad mi niña';
       tornPuzzleScene.classList.add('complete');
       puzzleNext.disabled = false;
       puzzleNext.setAttribute('aria-hidden', 'false');
@@ -619,6 +619,7 @@ function finishEnvelopeSwipe(event) {
   letterScene.classList.add('open');
   swipeHint.innerHTML = '<span>♡</span> Para ti, con todo mi amor';
   setTimeout(() => {
+    swipeHint.classList.add('gift-shown');
     giftReward.classList.add('visible');
     giftReward.setAttribute('aria-hidden', 'false');
   }, 10000);
