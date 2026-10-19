@@ -34,6 +34,10 @@ const pieceBank = document.querySelector('#pieceBank');
 const tornInstruction = document.querySelector('#tornInstruction');
 const puzzleNext = document.querySelector('#puzzleNext');
 const puzzleReset = document.querySelector('#puzzleReset');
+const framedEnvelope = document.querySelector('#framedEnvelope');
+const letterScene = document.querySelector('#letterScene');
+const finalEnvelope = document.querySelector('#finalEnvelope');
+const swipeHint = document.querySelector('#swipeHint');
 
 const combination = [20, 18, 45];
 const degreesPerNumber = 360 / 60;
@@ -61,6 +65,8 @@ let puzzlePieceGhost = null;
 let selectedPuzzlePiece = null;
 let completedPuzzlePieces = 0;
 let suppressPuzzleClick = false;
+let envelopeSwipeStart = null;
+let letterOpened = false;
 
 const memoryMessages = {
   1: 'Ese día contigo ♡',
@@ -558,6 +564,53 @@ function resetTornPuzzle() {
   tornInstruction.textContent = 'Arrastra cada pieza hasta su lugar';
 }
 
+function showEnvelopeBack() {
+  if (!tornPuzzleScene.classList.contains('complete')) return;
+  puzzleNext.disabled = true;
+  tornPuzzleScene.classList.add('flipped');
+  setTimeout(() => { framedEnvelope.disabled = false; }, 850);
+}
+
+function focusFinalEnvelope() {
+  tornPuzzleScene.classList.add('leaving');
+  setTimeout(() => {
+    tornPuzzleScene.classList.remove('visible');
+    tornPuzzleScene.setAttribute('aria-hidden', 'true');
+    letterScene.classList.add('visible');
+    letterScene.setAttribute('aria-hidden', 'false');
+  }, 650);
+}
+
+function startEnvelopeSwipe(event) {
+  if (letterOpened) return;
+  event.preventDefault();
+  envelopeSwipeStart = event.touches[0].clientY;
+  finalEnvelope.classList.add('swiping');
+}
+
+function moveEnvelopeSwipe(event) {
+  if (envelopeSwipeStart === null || letterOpened) return;
+  event.preventDefault();
+  const distance = Math.max(0, envelopeSwipeStart - event.touches[0].clientY);
+  finalEnvelope.style.setProperty('--swipe-lift', `${Math.min(distance * -.16, 0)}px`);
+}
+
+function finishEnvelopeSwipe(event) {
+  if (envelopeSwipeStart === null || letterOpened) return;
+  const distance = envelopeSwipeStart - event.changedTouches[0].clientY;
+  finalEnvelope.classList.remove('swiping');
+  finalEnvelope.style.removeProperty('--swipe-lift');
+  envelopeSwipeStart = null;
+  if (distance < 70) {
+    swipeHint.classList.add('try-again');
+    setTimeout(() => swipeHint.classList.remove('try-again'), 500);
+    return;
+  }
+  letterOpened = true;
+  letterScene.classList.add('open');
+  swipeHint.innerHTML = '<span>♡</span> Para ti, con todo mi amor';
+}
+
 function togglePlayback() {
   if (auroraAudio.paused) {
     auroraAudio.play().then(() => {
@@ -627,6 +680,12 @@ document.addEventListener('touchmove', movePuzzlePiece, { passive: false });
 document.addEventListener('touchend', finishPuzzlePieceDrag, { passive: true });
 document.addEventListener('touchcancel', finishPuzzlePieceDrag, { passive: true });
 puzzleReset.addEventListener('click', resetTornPuzzle);
+puzzleNext.addEventListener('click', showEnvelopeBack);
+framedEnvelope.addEventListener('click', focusFinalEnvelope);
+finalEnvelope.addEventListener('touchstart', startEnvelopeSwipe, { passive: false });
+finalEnvelope.addEventListener('touchmove', moveEnvelopeSwipe, { passive: false });
+finalEnvelope.addEventListener('touchend', finishEnvelopeSwipe, { passive: true });
+finalEnvelope.addEventListener('touchcancel', finishEnvelopeSwipe, { passive: true });
 
 dial.addEventListener('touchstart', startTouch, { passive: false });
 dial.addEventListener('touchmove', moveTouch, { passive: false });

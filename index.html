@@ -14,7 +14,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Montserrat:wght@400;500;600&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261019-7">
+  <link rel="stylesheet" href="style.css?v=20261019-8">
 </head>
 
 <body>
@@ -191,8 +191,15 @@
       <section class="torn-puzzle-scene" id="tornPuzzleScene" aria-hidden="true">
         <p class="torn-kicker">UN RECUERDO POR RECONSTRUIR</p>
         <h2>Une nuestros pedacitos</h2>
-        <div class="wood-frame">
+        <div class="wood-frame" id="woodFrame">
           <div class="torn-board" id="tornBoard" aria-label="Marco donde montar la fotografía"></div>
+          <div class="frame-back" aria-hidden="true">
+            <button class="framed-envelope" id="framedEnvelope" type="button" aria-label="Abrir el sobre pegado al marco" disabled>
+              <span class="mini-envelope-flap"></span><span class="mini-envelope-fold"></span>
+              <i class="wax-seal"><b></b></i>
+            </button>
+            <small>Toca el sobre</small>
+          </div>
         </div>
         <p class="torn-instruction" id="tornInstruction">Arrastra cada pieza hasta su lugar</p>
         <div class="piece-bank" id="pieceBank" aria-label="Piezas de la fotografía"></div>
@@ -201,11 +208,30 @@
           <small>EL RECUERDO ESTÁ COMPLETO</small><strong>Continuar</strong><span>→</span>
         </button>
       </section>
+      <section class="letter-scene" id="letterScene" aria-hidden="true">
+        <p class="letter-kicker">PARA TI, MI AMOR</p>
+        <h2>Hay algo que quiero decirte</h2>
+        <div class="standalone-envelope" id="finalEnvelope" role="button" aria-label="Desliza hacia arriba para abrir el sobre">
+          <div class="envelope-back"></div>
+          <article class="final-letter">
+            <span class="letter-date">NUESTRA HISTORIA</span>
+            <h3>Mi querida Karla,</h3>
+            <p>Si has llegado hasta aquí, ya sabes que cada recuerdo, cada canción y cada pedacito de nuestra historia me llevan siempre al mismo lugar: <em>a ti.</em></p>
+            <p>Gracias por convertir lo cotidiano en algo extraordinario, por cada sonrisa y por ser mi lugar favorito.</p>
+            <strong>Te elegiría una y mil veces.</strong>
+            <footer>Siempre tuyo, <span>A ♡</span></footer>
+          </article>
+          <div class="envelope-front"></div>
+          <div class="envelope-flap"></div>
+          <i class="final-wax-seal"><b></b></i>
+        </div>
+        <p class="swipe-hint" id="swipeHint"><span>↑</span> Desliza de abajo hacia arriba para abrirlo</p>
+      </section>
     </section>
   </main>
 
   <div class="hearts" id="hearts" aria-hidden="true"></div>
-  <script src="script.js?v=20261019-7"></script>
+  <script src="script.js?v=20261019-8"></script>
 </body>
 
 </html>
