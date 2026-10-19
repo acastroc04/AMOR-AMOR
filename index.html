@@ -155,7 +155,6 @@
         <p class="turntable-kicker">NUESTRA BANDA SONORA</p>
         <h2>Mi amor por ti...</h2>
         <div class="turntable" id="turntable">
-          <div class="lid"><span>♥</span><small>AURORA</small></div>
           <div class="turntable-body">
             <span class="wood-inlay inlay-one"></span><span class="wood-inlay inlay-two"></span>
             <div class="platter">
@@ -165,7 +164,11 @@
                 <i class="record-hole"></i>
               </div>
             </div>
-            <div class="tonearm" id="tonearm"><span class="arm-base"></span><span class="arm-stick"></span><span class="needle"></span></div>
+            <div class="tonearm" id="tonearm">
+              <span class="arm-base"><i></i></span>
+              <svg viewBox="0 0 100 130" aria-hidden="true"><path class="arm-shadow" d="M79 20 C78 58 64 75 39 103"></path><path class="arm-metal" d="M79 20 C78 58 64 75 39 103"></path></svg>
+              <span class="needle"><i></i></span>
+            </div>
             <span class="turntable-light"></span>
             <span class="speed-label">33⅓</span>
             <div class="control-deck"><span class="metal-knob"></span><span class="toggle-switch"></span><span class="speaker-grille"></span></div>
@@ -179,7 +182,7 @@
           <input id="seekBar" class="seek-bar" type="range" min="0" max="100" value="0" step="0.1" aria-label="Posición de la canción">
         </div>
         <p class="audio-status" id="audioStatus">Pulsa para escuchar</p>
-        <p class="fifteen-hint"><span>15</span> segundos de amor demuestran que puedes pasar a lo siguiente</p>
+        <p class="fifteen-hint"><span>15</span><strong>segundos de amor demuestran<br>que puedes continuar</strong></p>
         <audio id="auroraAudio" preload="metadata" src="audio/aurora.mp3"></audio>
       </section>
     </section>
