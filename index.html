@@ -23,11 +23,19 @@
       <div class="stage">
         <div class="safe" id="safe">
           <div class="safe-shell">
+            <span class="shell-rivet r-tl"></span><span class="shell-rivet r-tr"></span>
+            <span class="shell-rivet r-bl"></span><span class="shell-rivet r-br"></span>
             <div class="safe-door" id="safeDoor">
               <div class="door-face">
-                <div class="brand">K &amp; A</div>
+                <div class="door-inset"></div>
+                <span class="door-screw s-tl">✦</span><span class="door-screw s-tr">✦</span>
+                <span class="door-screw s-bl">✦</span><span class="door-screw s-br">✦</span>
+                <div class="brand"><small>CAJA DE RECUERDOS</small><strong>K <i>♥</i> A</strong><span>DESDE SIEMPRE</span></div>
+                <div class="hinge hinge-top"><i></i><i></i></div>
+                <div class="hinge hinge-bottom"><i></i><i></i></div>
                 <div class="dial-wrap">
                   <div class="dial-shadow"></div>
+                  <div class="dial-scale" aria-hidden="true"><span>0</span><span>10</span><span>20</span><span>30</span><span>40</span><span>50</span><span>60</span><span>70</span></div>
                   <button class="dial" id="dial" type="button" aria-label="Gira el dial de la caja fuerte" aria-describedby="hint">
                     <span class="dial-marker"></span>
                     <span class="dial-center"><span>♥</span></span>
@@ -38,16 +46,23 @@
                 <div class="turns" aria-live="polite">
                   <span class="turn-dot"></span><span class="turn-dot"></span><span class="turn-dot"></span>
                 </div>
-                <div class="handle"><span></span></div>
+                <div class="handle"><b></b><span></span><b></b></div>
+                <div class="serial">Nº 14 · 02 · ∞</div>
               </div>
             </div>
             <div class="safe-inside">
               <div class="inside-glow"></div>
+              <div class="velvet-lines"></div>
+              <div class="inside-stars"><i>✦</i><i>·</i><i>✧</i><i>·</i><i>✦</i></div>
               <button class="album-closed" id="albumButton" type="button" aria-label="Abrir nuestro álbum">
                 <span class="album-band"></span>
+                <span class="album-corner ac-tl"></span><span class="album-corner ac-tr"></span>
+                <span class="album-corner ac-bl"></span><span class="album-corner ac-br"></span>
+                <span class="album-frame"></span>
                 <span class="album-heart">♥</span>
                 <span class="album-title">Nuestra historia</span>
                 <span class="album-subtitle">K &amp; A</span>
+                <span class="album-clasp"></span>
               </button>
               <div class="open-prompt" aria-hidden="true">
                 <span>Toca el álbum</span>
@@ -63,22 +78,30 @@
     <section class="album-scene" id="albumScene" aria-hidden="true">
       <div class="album-book" id="albumBook">
         <div class="book-back"></div>
+        <div class="page-edges"></div>
         <div class="book-pages">
           <div class="paper-texture"></div>
+          <div class="spine-shadow"></div>
+          <span class="pressed-flower flower-one">❀</span>
+          <span class="pressed-flower flower-two">❧</span>
           <p class="album-kicker">Nuestro pequeño mundo</p>
           <h2>Cuatro momentos,<br><em>un millón de recuerdos.</em></h2>
           <div class="photos">
-            <figure class="polaroid photo-1"><div class="photo-frame"><img src="img/Karla-1.jpg" alt="Karla, recuerdo número uno"><span class="placeholder">01</span></div><figcaption>Ese día contigo ♡</figcaption></figure>
-            <figure class="polaroid photo-2"><div class="photo-frame"><img src="img/Karla-2.jpg" alt="Karla, recuerdo número dos"><span class="placeholder">02</span></div><figcaption>Mi lugar favorito</figcaption></figure>
-            <figure class="polaroid photo-3"><div class="photo-frame"><img src="img/Karla-3.jpg" alt="Karla, recuerdo número tres"><span class="placeholder">03</span></div><figcaption>Tú y tu sonrisa</figcaption></figure>
-            <figure class="polaroid photo-4"><div class="photo-frame"><img src="img/Karla-4.jpg" alt="Karla, recuerdo número cuatro"><span class="placeholder">04</span></div><figcaption>Siempre nosotros</figcaption></figure>
+            <figure class="polaroid photo-1"><span class="tape"></span><div class="photo-frame"><img src="img/Karla-1.jpg" alt="Karla, recuerdo número uno"><span class="placeholder">01</span></div><figcaption>Ese día contigo ♡</figcaption></figure>
+            <figure class="polaroid photo-2"><span class="tape"></span><div class="photo-frame"><img src="img/Karla-2.jpg" alt="Karla, recuerdo número dos"><span class="placeholder">02</span></div><figcaption>Mi lugar favorito</figcaption></figure>
+            <figure class="polaroid photo-3"><span class="tape"></span><div class="photo-frame"><img src="img/Karla-3.jpg" alt="Karla, recuerdo número tres"><span class="placeholder">03</span></div><figcaption>Tú y tu sonrisa</figcaption></figure>
+            <figure class="polaroid photo-4"><span class="tape"></span><div class="photo-frame"><img src="img/Karla-4.jpg" alt="Karla, recuerdo número cuatro"><span class="placeholder">04</span></div><figcaption>Siempre nosotros</figcaption></figure>
           </div>
           <p class="love-note">Gracias por convertir los días normales<br>en mis recuerdos favoritos.</p>
           <div class="signature">Con todo mi amor <span>♥</span></div>
         </div>
         <div class="book-cover" aria-hidden="true">
-          <span class="cover-band"></span><span class="cover-heart">♥</span>
+          <span class="cover-band"></span>
+          <span class="cover-corner cc-tl"></span><span class="cover-corner cc-tr"></span>
+          <span class="cover-corner cc-bl"></span><span class="cover-corner cc-br"></span>
+          <span class="cover-ornament top">◆</span><span class="cover-heart">♥</span>
           <strong>Nuestra historia</strong><small>K &amp; A</small>
+          <span class="cover-ornament bottom">◆</span><span class="cover-clasp"></span>
         </div>
       </div>
     </section>
