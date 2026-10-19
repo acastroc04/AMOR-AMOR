@@ -56,7 +56,7 @@ h1 em { color: #dfb4ba; font-weight: 500; }
 .handle span { position:absolute; top:50%; left:50%; width:27px; height:27px; border-radius:50%; background:radial-gradient(circle at 35% 30%,#8b8580,#252223 64%); border:1px solid #928b86; transform:translate(-50%,-50%); }
 .safe-inside { position:absolute; z-index:2; inset:4px; overflow:hidden; display:grid; place-items:center; border-radius:12px; background:radial-gradient(circle,#6e3548,#160e13 70%); transform:translateZ(0); -webkit-transform:translateZ(0); }
 .inside-glow { position:absolute; inset:0; background:radial-gradient(circle,rgba(223,164,120,.4),transparent 62%); animation:breathe 2s ease-in-out infinite alternate; }
-.album-closed { position:relative; z-index:3; display:block; width:66%; aspect-ratio:.76; border:1px solid rgba(225,184,144,.65); border-radius:4px 11px 11px 4px; color:#eaccc9; background:linear-gradient(105deg,#451a28,#7d2c47 15%,#561d31 65%,#2e101c); box-shadow:-7px 7px 0 #c6ae8c,0 14px 25px #000,0 0 42px rgba(238,174,131,.42); transform:translateY(35px) scale(.9) translateZ(1px); opacity:0; transition:transform .8s .75s,opacity .5s .75s; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.album-closed { position:relative; z-index:3; display:block; width:66%; aspect-ratio:.76; border:1px solid rgba(225,184,144,.65); border-radius:4px 11px 11px 4px; color:#eaccc9; background:linear-gradient(105deg,#451a28,#7d2c47 15%,#561d31 65%,#2e101c); box-shadow:-7px 7px 0 #c6ae8c,0 14px 25px #000,0 0 42px rgba(238,174,131,.42); transform:translateY(18px) scale(.96) translateZ(1px); opacity:0; transition:transform .45s .05s,opacity .2s .05s; cursor:pointer; -webkit-tap-highlight-color:transparent; will-change:transform,opacity; }
 .safe.open .album-closed { transform:translateY(0) scale(1); opacity:1; }
 .safe.fully-open .album-closed { opacity:1; visibility:visible; animation:albumPulse 1.5s ease-in-out infinite; }
 .album-band,.cover-band { position:absolute; top:0; bottom:0; left:17%; width:2px; background:#c19b63; box-shadow:6px 0 0 rgba(193,155,99,.3); }
@@ -263,7 +263,6 @@ figcaption { color:#5a3b43; text-shadow:0 1px #fff; }
 .record-label img { width:100%; height:100%; display:block; object-fit:cover; }
 .record-label::after { content:""; position:absolute; inset:0; border-radius:50%; background:radial-gradient(circle at 35% 27%,rgba(255,241,200,.22),transparent 35%); }
 .record-heart { position:absolute; z-index:4; left:50%; top:50%; width:9px; height:9px; background:linear-gradient(135deg,#f5dc91,#a87325); transform:translate(-50%,-43%) rotate(45deg); box-shadow:0 1px 3px #301907,0 0 0 1px rgba(91,54,10,.5); }
-.record-heart::before,.record-heart::after { content:""; position:absolute; width:9px; height:9px; border-radius:50%; background:inherit; }.record-heart::before{left:-5px}.record-heart::after{top:-5px}
 .tonearm { position:absolute; z-index:6; right:5%; top:7%; width:34%; height:64%; transform-origin:79% 15%; transition:transform .75s cubic-bezier(.2,.75,.2,1); filter:drop-shadow(2px 4px 3px rgba(0,0,0,.55)); }
 .turntable.playing .tonearm { transform:rotate(12deg); }
 .tonearm svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
@@ -313,7 +312,7 @@ figcaption { color:#5a3b43; text-shadow:0 1px #fff; }
 .torn-board::after { content:""; position:absolute; z-index:5; inset:0; background:url('img/FotoRota.jpg') center/cover; opacity:0; pointer-events:none; transition:opacity .7s ease .2s; }
 .torn-puzzle-scene.complete .torn-board::after { opacity:1; }
 .torn-board { backface-visibility:hidden; -webkit-backface-visibility:hidden; }
-.frame-back { position:absolute; inset:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:13px; backface-visibility:hidden; -webkit-backface-visibility:hidden; transform:rotateY(180deg); background:radial-gradient(circle,#714552,#3d2029 72%); box-shadow:inset 0 0 22px rgba(0,0,0,.58),inset 0 0 0 2px rgba(225,181,119,.18); }
+.frame-back { position:absolute; inset:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:13px; opacity:0; visibility:hidden; transform:rotateY(-90deg); background:radial-gradient(circle,#714552,#3d2029 72%); box-shadow:inset 0 0 22px rgba(0,0,0,.58),inset 0 0 0 2px rgba(225,181,119,.18); transition:transform .52s cubic-bezier(.3,.7,.2,1),opacity .08s,visibility .08s; }
 .frame-back::before { content:""; position:absolute; inset:8px; border:1px dashed rgba(221,180,122,.24); pointer-events:none; }
 .frame-back small { color:#d8bda9; font:italic 600 .77rem "Cormorant Garamond",serif; letter-spacing:.06em; }
 .framed-envelope { position:relative; width:76%; aspect-ratio:1.45; padding:0; border:1px solid #b7966e; background:linear-gradient(145deg,#f1dfbd,#d7b98d); filter:drop-shadow(0 8px 8px rgba(12,3,6,.5)); transform:rotate(2deg); -webkit-tap-highlight-color:transparent; }
@@ -322,8 +321,10 @@ figcaption { color:#5a3b43; text-shadow:0 1px #fff; }
 .wax-seal,.final-wax-seal { position:absolute; z-index:6; left:50%; top:50%; width:38px; height:38px; border-radius:48% 52% 45% 55%; background:radial-gradient(circle at 35% 30%,#d44c55,#941c2d 62%,#65101f); box-shadow:0 3px 6px rgba(58,6,15,.5),inset 0 0 0 3px rgba(112,13,29,.35),inset 0 0 0 5px rgba(238,105,105,.16); transform:translate(-50%,-35%) rotate(-5deg); }
 .wax-seal b,.final-wax-seal b { position:absolute; left:50%; top:50%; width:11px; height:11px; background:#6e1122; transform:translate(-50%,-43%) rotate(45deg); }
 .wax-seal b::before,.wax-seal b::after,.final-wax-seal b::before,.final-wax-seal b::after { content:""; position:absolute; width:11px; height:11px; border-radius:50%; background:inherit; }.wax-seal b::before,.final-wax-seal b::before{left:-6px}.wax-seal b::after,.final-wax-seal b::after{top:-6px}
-.torn-puzzle-scene.flipped .wood-frame { transform:rotateY(180deg) rotate(.5deg); box-shadow:0 20px 34px rgba(10,3,3,.7); }
-.torn-puzzle-scene.flipped .torn-kicker,.torn-puzzle-scene.flipped h2,.torn-puzzle-scene.flipped .torn-instruction,.torn-puzzle-scene.flipped .puzzle-next { opacity:0; visibility:hidden; pointer-events:none; transition:.35s; }
+.torn-puzzle-scene.flipping .wood-frame { transform:rotateY(90deg) scale(.94); box-shadow:0 8px 16px rgba(10,3,3,.45); }
+.torn-puzzle-scene.back-visible .wood-frame { transform:rotateY(0) rotate(.5deg); box-shadow:0 20px 34px rgba(10,3,3,.7); }
+.torn-puzzle-scene.back-visible .torn-board { opacity:0; visibility:hidden; }
+.torn-puzzle-scene.back-visible .frame-back { opacity:1; visibility:visible; transform:rotateY(0); }
 .torn-puzzle-scene.leaving { opacity:0; transform:scale(.72); }
 .torn-slot { position:relative; min-width:0; min-height:0; padding:0; border:1px dashed rgba(235,200,151,.18); background:rgba(21,10,12,.62); -webkit-tap-highlight-color:transparent; }
 .torn-slot::after { content:""; position:absolute; inset:42%; border-radius:50%; background:rgba(231,194,137,.16); }
@@ -348,6 +349,7 @@ figcaption { color:#5a3b43; text-shadow:0 1px #fff; }
 .puzzle-next { width:min(84vw,330px); min-height:58px; margin:9px 0 0; display:grid; grid-template-columns:1fr auto; grid-template-rows:auto auto; align-items:center; padding:8px 17px; border:1px solid #d3ad6d; border-radius:9px; color:#f0d6bb; background:linear-gradient(115deg,#32101e,#762943 48%,#3b1123); box-shadow:0 12px 25px rgba(11,3,7,.58),inset 0 0 0 3px #3a1022,inset 0 0 0 4px rgba(219,177,104,.4); opacity:0; visibility:hidden; transform:translateY(14px) scale(.95); transition:.45s; }
 .torn-puzzle-scene.complete .puzzle-next { opacity:1; visibility:visible; transform:translateY(0) scale(1); }
 .puzzle-next small { grid-column:1; color:#bd9984; font:600 .38rem Montserrat,sans-serif; letter-spacing:.16em; }.puzzle-next strong{grid-column:1;font:italic 600 1.25rem "Cormorant Garamond",serif}.puzzle-next span{grid-column:2;grid-row:1/3;color:#e5bd78;font-size:1.25rem}
+.torn-puzzle-scene.flipping .torn-kicker,.torn-puzzle-scene.flipping>h2,.torn-puzzle-scene.flipping .torn-instruction,.torn-puzzle-scene.flipping .puzzle-next,.torn-puzzle-scene.back-visible .torn-kicker,.torn-puzzle-scene.back-visible>h2,.torn-puzzle-scene.back-visible .torn-instruction,.torn-puzzle-scene.back-visible .puzzle-next { opacity:0!important; visibility:hidden!important; pointer-events:none!important; transition:.3s; }
 .letter-scene { position:fixed; z-index:32; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:max(18px,env(safe-area-inset-top)) 12px max(18px,env(safe-area-inset-bottom)); color:#f0dfd2; text-align:center; background:radial-gradient(circle at 50% 48%,rgba(125,65,81,.4),transparent 55%); opacity:0; visibility:hidden; transform:scale(.82); transition:opacity .7s,transform .9s cubic-bezier(.2,.8,.2,1),visibility .7s; }
 .letter-scene.visible { opacity:1; visibility:visible; transform:scale(1); }
 .letter-kicker { margin:0 0 3px; color:#d2ac73; font:600 .48rem Montserrat,sans-serif; letter-spacing:.25em; transition:.5s; }

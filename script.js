@@ -39,7 +39,7 @@ const letterScene = document.querySelector('#letterScene');
 const finalEnvelope = document.querySelector('#finalEnvelope');
 const swipeHint = document.querySelector('#swipeHint');
 
-const combination = [20, 18, 45];
+const combination = [14, 25, 16];
 const degreesPerNumber = 360 / 60;
 let sequenceIndex = 0;
 let dragging = false;
@@ -567,8 +567,12 @@ function resetTornPuzzle() {
 function showEnvelopeBack() {
   if (!tornPuzzleScene.classList.contains('complete')) return;
   puzzleNext.disabled = true;
-  tornPuzzleScene.classList.add('flipped');
-  setTimeout(() => { framedEnvelope.disabled = false; }, 850);
+  tornPuzzleScene.classList.add('flipping');
+  setTimeout(() => {
+    tornPuzzleScene.classList.add('back-visible');
+    tornPuzzleScene.classList.remove('flipping');
+  }, 520);
+  setTimeout(() => { framedEnvelope.disabled = false; }, 1050);
 }
 
 function focusFinalEnvelope() {
