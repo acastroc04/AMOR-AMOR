@@ -271,14 +271,16 @@ figcaption { color:#5a3b43; text-shadow:0 1px #fff; }
 .arm-metal { stroke:#b8aaa0; stroke-width:6; }
 .arm-base { position:absolute; z-index:3; right:4%; top:1%; width:38px; height:38px; border:2px solid #b0a094; border-radius:50%; background:radial-gradient(circle at 38% 32%,#b7a99e 0 12%,#4b4441 36%,#201c1e 68%); box-shadow:inset 0 0 0 4px #302a2a,0 4px 7px #1b0c0e; }
 .arm-base i { position:absolute; inset:11px; border:1px solid #c5b4a6; border-radius:50%; background:#373131; }
-.needle { position:absolute; z-index:4; left:19%; bottom:4%; width:29px; height:18px; border:1px solid #2b2425; border-radius:3px 8px 8px 3px; background:linear-gradient(150deg,#c7b7a8,#645956 55%,#2a2426); transform:rotate(-35deg); box-shadow:0 3px 5px #1b0c0e; }
-.needle::before { content:""; position:absolute; left:4px; right:4px; top:4px; height:3px; border-radius:2px; background:#7d263e; }
-.needle i { position:absolute; left:3px; bottom:-7px; width:2px; height:8px; background:#ddd0bf; transform:rotate(12deg); }
-.turntable-light { position:absolute; right:10%; bottom:31%; width:7px; height:7px; border-radius:50%; background:#db5463; box-shadow:0 0 8px #f4576c; }
+.arm-cartridge { fill:#625956; stroke:#c3b3a5; stroke-width:1.2; }
+.cartridge-stripe { fill:#8e2d46; }
+.stylus { fill:none; stroke:#e0d2c0; stroke-width:1.7; stroke-linecap:round; }
 .speed-label { position:absolute; right:8%; bottom:22%; color:#cba778; font:600 .42rem Montserrat,sans-serif; }
 .control-deck { position:absolute; z-index:5; right:6%; bottom:7%; width:27%; height:21%; border:1px solid rgba(45,25,22,.7); border-radius:5px; background:linear-gradient(145deg,#3b2925,#171416); box-shadow:inset 0 0 0 2px #706057,0 3px 6px rgba(0,0,0,.5); }
 .metal-knob { position:absolute; left:12%; top:15%; width:18px; height:18px; border-radius:50%; background:repeating-conic-gradient(#a99a8c 0 8deg,#504844 9deg 18deg); box-shadow:inset 0 0 0 5px #373130,0 2px 3px #000; }
 .toggle-switch { position:absolute; right:13%; top:17%; width:8px; height:21px; border-radius:4px; background:linear-gradient(90deg,#3c3634,#c0b2a5,#4a4240); transform:rotate(8deg); box-shadow:0 2px 3px #000; }
+.turntable-light { position:absolute; left:51%; top:22%; width:7px; height:7px; border:1px solid #351016; border-radius:50%; background:#6c2934; box-shadow:inset 0 0 2px #24090e; transition:.25s; }
+.turntable-light::after { content:"ON"; position:absolute; top:10px; left:50%; color:#8f7c71; font:600 3px Montserrat,sans-serif; letter-spacing:.08em; transform:translateX(-50%); }
+.turntable.playing .turntable-light { background:#ee5362; box-shadow:0 0 8px #f4576c,inset 0 0 2px #ffd0d0; }
 .speaker-grille { position:absolute; left:12%; right:12%; bottom:13%; height:11px; opacity:.62; background:repeating-linear-gradient(90deg,#0d0b0c 0 2px,transparent 2px 5px); }
 .foot { position:absolute; z-index:-1; bottom:-9px; width:32px; height:13px; border-radius:3px 3px 8px 8px; background:linear-gradient(#342a27,#100d0e); box-shadow:0 4px 5px rgba(0,0,0,.5); }.foot-left{left:11%}.foot-right{right:11%}
 .player-controls { position:relative; z-index:8; width:min(89vw,370px); height:82px; flex:none; margin-top:16px; display:grid; grid-template-columns:50px 1fr; grid-template-rows:38px 15px 14px; column-gap:11px; padding:9px 14px 8px; border:1px solid rgba(209,169,105,.5); border-radius:12px; text-align:left; background:linear-gradient(135deg,rgba(42,14,26,.96),rgba(91,31,51,.96)); box-shadow:0 13px 26px rgba(10,3,6,.58),inset 0 0 0 3px #32101e,inset 0 0 0 4px rgba(218,175,102,.25); }
