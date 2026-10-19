@@ -44,6 +44,7 @@ h1 em { color: #dfb4ba; font-weight: 500; }
 .dial-shadow { position:absolute; inset:2px; border-radius:50%; background:#070607; box-shadow:0 13px 18px #000; }
 .dial { position:absolute; inset:7px; border:2px solid #8a827d; border-radius:50%; padding:0; cursor:grab; touch-action:none; color:var(--cream); background: repeating-conic-gradient(from 0deg,#6d6865 0deg 2deg,#282526 2deg 15deg); box-shadow:inset 0 0 0 13px #252223,inset 0 0 0 15px #78716c,inset 0 0 30px #050505; transform:rotate(var(--rotation, 0deg)); }
 .dial:active { cursor:grabbing; }
+.dial.touching { filter:brightness(1.16); box-shadow:inset 0 0 0 13px #252223,inset 0 0 0 15px #a18f80,inset 0 0 30px #050505,0 0 16px rgba(216,173,118,.4); }
 .dial-marker { position:absolute; top:7px; left:50%; width:3px; height:18px; border-radius:3px; background:#e2bf7e; box-shadow:0 0 8px #e4b75e; transform:translateX(-50%); }
 .dial-center { position:absolute; inset:40px; display:grid; place-items:center; border:2px solid #77706d; border-radius:50%; color:#c9a36d; font-size:1.3rem; background:radial-gradient(circle at 35% 30%,#514c49,#171516 65%); box-shadow:0 4px 8px #000; }
 .notch { position:absolute; left:50%; top:50%; width:2px; height:100%; background:linear-gradient(#aaa 0 5px,transparent 5px 95%,#aaa 95%); transform-origin:center; opacity:.7; }

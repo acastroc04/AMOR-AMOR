@@ -14,6 +14,8 @@ let rotation = 0;
 let distance = 0;
 let completedTurns = 0;
 let unlocked = false;
+let lastTouchX = 0;
+let lastTouchY = 0;
 
 function pointerAngle(point) {
   const box = dial.getBoundingClientRect();
@@ -51,15 +53,43 @@ function endTurn() {
 }
 
 function startTouch(event) {
-  if (!event.touches.length) return;
+  if (unlocked || !event.touches.length) return;
   event.preventDefault();
-  beginTurn(event.touches[0]);
+  dragging = true;
+  lastTouchX = event.touches[0].clientX;
+  lastTouchY = event.touches[0].clientY;
+  dial.classList.add('touching');
 }
 
 function moveTouch(event) {
-  if (!dragging || !event.touches.length) return;
+  if (!dragging || unlocked || !event.touches.length) return;
   event.preventDefault();
-  turn(event.touches[0]);
+  const touch = event.touches[0];
+  const moveX = touch.clientX - lastTouchX;
+  const moveY = touch.clientY - lastTouchY;
+  const travelled = Math.sqrt((moveX * moveX) + (moveY * moveY));
+
+  if (travelled > 0) {
+    const degrees = travelled * 0.9;
+    rotation += degrees;
+    distance += degrees;
+    dial.style.setProperty('--rotation', `${rotation}deg`);
+    lastTouchX = touch.clientX;
+    lastTouchY = touch.clientY;
+
+    const newTurns = Math.min(3, Math.floor(distance / 360));
+    if (newTurns !== completedTurns) {
+      completedTurns = newTurns;
+      dots.forEach((dot, index) => dot.classList.toggle('done', index < completedTurns));
+      hint.textContent = completedTurns < 3 ? `${completedTurns} de 3 vueltas…` : '¡Combinación correcta!';
+      if (completedTurns === 3) unlock();
+    }
+  }
+}
+
+function finishTouch() {
+  dragging = false;
+  dial.classList.remove('touching');
 }
 
 function unlock() {
@@ -103,8 +133,8 @@ albumButton.addEventListener('click', () => {
 
 dial.addEventListener('touchstart', startTouch, { passive: false });
 dial.addEventListener('touchmove', moveTouch, { passive: false });
-dial.addEventListener('touchend', endTurn, { passive: true });
-dial.addEventListener('touchcancel', endTurn, { passive: true });
+dial.addEventListener('touchend', finishTouch, { passive: true });
+dial.addEventListener('touchcancel', finishTouch, { passive: true });
 
 dial.addEventListener('mousedown', beginTurn);
 window.addEventListener('mousemove', turn);
